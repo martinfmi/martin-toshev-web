@@ -5,7 +5,7 @@ import BlogArticle from '../layouts/BlogArticle.astro';
 const [about] = await getCollection('about');
 
 if (!about) {
-  throw new Error('Missing src/content/about.mdx content entry.');
+  throw new Error('Missing src/content/about.md or about.mdx content entry.');
 }
 
 const { Content, headings } = await render(about);

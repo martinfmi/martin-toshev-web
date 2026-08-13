@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
@@ -54,7 +55,15 @@ const blogArticleSchema = (context: Parameters<CollectionSchemaFactory>[0]) =>
     sticky: z.union([z.boolean(), z.number().positive()]).optional().default(false),
   });
 
-const contentSource = process.env.NAVFOLIO_CONTENT_SOURCE === 'docs' ? 'docs' : 'content';
+// Prefer the site content tree. Only use the Navfolio docs submodule when it
+// actually contains content — otherwise Cloudflare/docs:build would render an
+// empty site and fail on /about.
+const requestedDocs = process.env.NAVFOLIO_CONTENT_SOURCE === 'docs';
+const docsHasSiteContent =
+  existsSync('./src/docs/about.md') ||
+  existsSync('./src/docs/about.mdx') ||
+  existsSync('./src/docs/blog');
+const contentSource = requestedDocs && docsHasSiteContent ? 'docs' : 'content';
 const contentBase = contentSource === 'docs' ? './src/docs' : './src/content';
 const projectsModuleEnabled = isPageModuleEnabled(navfolioConfig, 'projects');
 const vibeModuleEnabled = isPageModuleEnabled(navfolioConfig, 'vibe');
