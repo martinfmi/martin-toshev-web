@@ -1,0 +1,826 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0107)https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr" slick-uniqueid="3"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script src="./Running javascript from Eclipse_files/cb=gapi.loaded_1" async=""></script><script src="./Running javascript from Eclipse_files/cb=gapi(1).loaded_0" async=""></script><script id="linkedin-js" async="true" src="./Running javascript from Eclipse_files/in.js.download"></script><script id="google-wjs" async="true" src="./Running javascript from Eclipse_files/plusone.js.download" gapi_processed="true">{lang: 'en-US'}</script><script src="./Running javascript from Eclipse_files/all.js.download" async="" crossorigin="anonymous"></script><script type="text/javascript">// <![CDATA[
+( function($) {
+    $(document).ready(function(){
+    $('.php li:nth-child(odd)').addClass('odListItem');
+    $('.php li:nth-child(even)').addClass('evenListItem');
+    $('.html4strict li:nth-child(odd)').addClass('odListItem');
+    $('.html4strict li:nth-child(even)').addClass('evenListItem');
+    $('.css li:nth-child(odd)').addClass('odListItem');
+    $('.css li:nth-child(even)').addClass('evenListItem');   
+    $('.javascript li:nth-child(odd)').addClass('odListItem');
+    $('.javascript li:nth-child(even)').addClass('evenListItem');       
+    });
+} ) ( jQuery );
+// ]]></script>
+
+  <!--<base href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse">--><base href=".">
+  
+  <meta name="keywords" content="Martin Toshev, algorithms, data structures, technology, Мартин Тошев, алгоритми, структури от данни, технологии">
+  <meta name="author" content="Martin Toshev">
+  <meta name="description" content="The personal web site of Martin Toshev with a focus on software engineering.
+Личен сайт на Мартин Тошев с фокус над софтуерното инженерство.">
+  <meta name="generator" content="Joomla! - Open Source Content Management">
+  <title>Running javascript from Eclipse</title>
+  <link href="https://martin-toshev.com/templates/martin_toshev/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+  <link href="https://martin-toshev.com/index.php/component/search/?Itemid=473&amp;catid=83&amp;id=76&amp;format=opensearch" rel="search" title="Search martin-toshev" type="application/opensearchdescription+xml">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/shCoreEclipse.css" type="text/css">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/shThemeEclipse.css" type="text/css">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/system.css" type="text/css">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/position.css" type="text/css" media="screen,projection">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/layout.css" type="text/css" media="screen,projection">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/print.css" type="text/css" media="print">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/general.css" type="text/css">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/personal.css" type="text/css">
+  <link rel="stylesheet" href="./Running javascript from Eclipse_files/modal.css" type="text/css">
+  <script src="./Running javascript from Eclipse_files/mootools-core.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/core.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/caption.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shCore.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushAS3.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushBash.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushCpp.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushCSharp.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushCss.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushDelphi.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushDiff.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushGroovy.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushJava.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushJavaFX.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushJScript.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushPerl.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushPhp.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushPlain.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushPowerShell.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushPython.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushRuby.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushScala.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushSql.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushVb.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/shBrushXml.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/all(1).js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/widgets.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/mootools-more.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/md_stylechanger.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/hide.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/custom.js.download" type="text/javascript"></script>
+  <script src="./Running javascript from Eclipse_files/modal.js.download" type="text/javascript"></script>
+  <script type="text/javascript">
+window.addEvent('load', function() {
+				new JCaption('img.caption');
+			});
+
+			  SyntaxHighlighter.all();
+		 
+
+          var js,fjs=document.getElementsByTagName('script')[0];
+          if(!document.getElementById('google-wjs')){
+            js=document.createElement('script');
+            js.id='google-wjs';
+            js.setAttribute('async', 'true');
+            js.src="//apis.google.com/js/plusone.js";
+            js.text="{lang: 'en-US'}";
+            fjs.parentNode.insertBefore(js,fjs);
+          }
+
+          var js,fjs=document.getElementsByTagName('script')[0];
+          if(!document.getElementById('linkedin-js')){
+            js=document.createElement('script');
+            js.id='linkedin-js';
+            js.setAttribute('async', 'true');
+            js.src="//platform.linkedin.com/in.js";
+            fjs.parentNode.insertBefore(js,fjs);
+          }
+		window.addEvent('domready', function() {
+
+			SqueezeBox.initialize({});
+			SqueezeBox.assign($$('a.modal'), {
+				parse: 'rel'
+			});
+		});
+  </script>
+  <meta property="og:type" content="article">
+<meta property="og:description" content="The personal web site of Martin Toshev with a focus on software engineering.
+Личен сайт на Мартин Тошев с фокус над софтуерното инженерство.">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/tips_and_tricks/running_javascript_under_eclipse.gif">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/tips_and_tricks/running_javascript_under_eclipse2.gif">
+<meta property="og:url" content="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse">
+<meta property="og:title" content="Running javascript from Eclipse">
+<meta property="my:fb" content="on">
+<meta property="my:google" content="on">
+<meta property="my:tw" content="on">
+<meta property="my:in" content="on">
+  <meta property="fb:admins" content="773119927">
+<meta property="fb:app_id" content="332443736848329">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="martin-toshev">
+
+
+
+<!--[if lte IE 6]>
+<link href="/templates/martin_toshev/css/ieonly.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+#line {
+	width:98% ;
+}
+.logoheader {
+	height:200px;
+}
+#header ul.menu {
+	display:block !important;
+	width:98.2% ;
+}
+</style>
+<![endif]-->
+
+<!--[if IE 7]>
+<link href="/templates/martin_toshev/css/ie7only.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<script type="text/javascript">
+	var big ='72%';
+	var small='53%';
+	var altopen='is open';
+	var altclose='is closed';
+	var bildauf='/templates/martin_toshev/images/plus.png';
+	var bildzu='/templates/martin_toshev/images/minus.png';
+	var rightopen='Open info';
+	var rightclose='Close info';
+	var fontSizeTitle='Font size';
+	var bigger='Bigger';
+	var reset='Reset';
+	var smaller='Smaller';
+	var biggerTitle='Increase size';
+	var resetTitle='Revert styles to default';
+	var smallerTitle='Decrease size';
+</script>
+
+<style type="text/css"></style><style type="text/css" data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0px;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:lucida grande,tahoma,verdana,arial,sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:400;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{0%{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+
+.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0px;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:lucida grande,tahoma,verdana,arial,sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:400;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{0%{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+
+.fb_dialog{background:#525252b3;position:absolute;top:-10000px;z-index:10001}.fb_dialog_advanced{border-radius:8px;padding:10px}.fb_dialog_content{background:#fff;color:#373737}.fb_dialog_close_icon{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{left:5px;right:auto;top:5px}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:700;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://connect.facebook.net/rsrc.php/v4/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{height:100%;left:0;margin:0;overflow:visible;position:absolute;top:-10000px;transform:none;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://connect.facebook.net/rsrc.php/v4/ya/r/3rhSv5V8j3o.gif) #fff no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{background:none;height:auto;min-height:initial;min-width:initial;width:auto}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{clear:both;color:#fff;display:block;font-size:18px;padding-top:20px}#fb-root #fb_dialog_ipad_overlay{background:#0006;inset:0;min-height:100%;position:absolute;width:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:sticky;top:0}.fb_dialog_content .dialog_header{background:linear-gradient(from(#738aba),to(#2c4987));border-bottom:1px solid;border-color:#043b87;box-shadow:#fff 0 1px 1px -1px inset;color:#fff;font:700 14px Helvetica,sans-serif;text-overflow:ellipsis;text-shadow:rgba(0,30,84,.296875) 0px -1px 0px;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:linear-gradient(from(#4267B2),to(#2a4887));background-clip:padding-box;border:1px solid #29487d;border-radius:3px;display:inline-block;line-height:18px;margin-top:3px;max-width:85px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{background:none;border:none;color:#fff;font:700 12px Helvetica,sans-serif;margin:2px -12px;padding:2px 6px 3px;text-shadow:rgba(0,30,84,.296875) 0px -1px 0px}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:700;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://connect.facebook.net/rsrc.php/v4/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #4A4A4A;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #4A4A4A;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://connect.facebook.net/rsrc.php/v4/y2/r/onuUJj0tCqE.png);background-position:50% 50%;background-repeat:no-repeat;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}
+</style><script charset="utf-8" src="./Running javascript from Eclipse_files/button.2276a045429f6681b56da5eb1dcfa53c.js.download"></script></head>
+
+<body style="font-size: 100%;">
+
+	<div id="all">
+		<div id="back">
+			<div id="header">
+				<div id="line">
+					<div id="fontsize"></div>
+					<h3 class="unseen">
+					Search</h3>
+					<form action="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks" method="post" role="search">
+	<div class="search">
+		<label for="mod-search-searchword">Search...</label><input name="searchword" id="mod-search-searchword" maxlength="20" class="inputbox" type="text" size="20" value="Search..." onblur="if (this.value==&#39;&#39;) this.value=&#39;Search...&#39;;" onfocus="if (this.value==&#39;Search...&#39;) this.value=&#39;&#39;;">	<input type="hidden" name="task" value="search">
+	<input type="hidden" name="option" value="com_search">
+	<input type="hidden" name="Itemid" value="473">
+	</div>
+</form>
+
+				</div>
+				<!-- end line -->
+	                                                        
+                				                                        <img class="logo_header" src="./Running javascript from Eclipse_files/martin_toshev_logo.gif" alt="Martin Toshev">
+                                                                                
+                                <div class="logoheader">
+                                        <h1 id="logo">
+
+                                                                                <span class="header1">
+                                        Algorithms, software architectures and more ...                                        </span></h1>
+                                </div><!-- end logoheader -->
+                                        <ul class="skiplinks">
+                                                <li><a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse#main" class="u2">Skip to content</a></li>
+                                                <li><a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse#nav" class="u2">Jump to main navigation and login</a></li>
+                                                                                    </ul>
+                                        <h2 class="unseen">Nav view search</h2>
+                                        <h3 class="unseen">Navigation</h3>
+                                        
+
+                        </div>
+			<!-- end header -->
+			<div id="contentarea">
+				<div id="breadcrumbs">
+
+					
+<div class="breadcrumbs">
+<a href="https://martin-toshev.com/" class="pathway">Home</a> <img src="./Running javascript from Eclipse_files/arrow.png" alt=""> <a href="https://martin-toshev.com/index.php/software-engineering" class="pathway">Software engineering</a> <img src="./Running javascript from Eclipse_files/arrow.png" alt=""> <a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks" class="pathway">Tips &amp; Tricks</a> <img src="./Running javascript from Eclipse_files/arrow.png" alt=""> <span>Running javascript from Eclipse</span></div>
+
+
+				</div>
+				
+				
+				
+				
+
+                                        
+
+                                                        <div class="left1 leftbigger" id="nav" role="navigation">
+                                                   <div class="moduletable_menu">
+ 
+<ul class="menu">
+<li class="item-435"><a href="https://martin-toshev.com/">Home</a></li><li class="item-468 active deeper parent"><a href="https://martin-toshev.com/index.php/software-engineering">Software engineering</a><ul><li class="item-469"><a href="https://martin-toshev.com/index.php/software-engineering/algorithms">Algorithms</a></li><li class="item-470"><a href="https://martin-toshev.com/index.php/software-engineering/data-structures">Data Structures</a></li><li class="item-471"><a href="https://martin-toshev.com/index.php/software-engineering/architectures">Architectures</a></li><li class="item-472"><a href="https://martin-toshev.com/index.php/software-engineering/tools">Tools</a></li><li class="item-473 current active"><a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks">Tips &amp; Tricks</a></li></ul></li><li class="item-482"><a href="https://martin-toshev.com/index.php/conferences-java-javascript">Tech events</a></li><li class="item-485"><a href="https://martin-toshev.com/index.php/techtalks">Tech talks</a></li><li class="item-484"><a href="https://martin-toshev.com/index.php/trainings">Trainings</a></li><li class="item-483"><a href="https://martin-toshev.com/index.php/software-java-javascript-books">Books</a></li><li class="item-474"><a href="https://martin-toshev.com/index.php/about-me">About me</a></li></ul>
+</div>
+
+                                                                
+                                                                
+
+
+                                                        </div><!-- end navi -->
+               
+                                        <div id="wrapper2">
+
+                                                <div id="main" role="main">
+
+                                                
+                                                        
+<div id="system-message-container">
+</div>
+                                                        <div class="item-page">
+
+	<h2>
+			<a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse">
+		Running javascript from Eclipse</a>
+		</h2>
+
+	<ul class="actions">
+						<li class="print-icon">
+			<a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,&#39;win2&#39;,&#39;status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no&#39;); return false;" rel="nofollow"><img src="./Running javascript from Eclipse_files/printButton.png" alt="Print"></a>			</li>
+		
+		
+		
+	
+	</ul>
+
+
+
+
+	<dl class="article-info">
+	<dt class="article-info-term">Details</dt>
+	<dd class="published">
+	Published on Saturday, 18 August 2012 16:03	</dd>
+	</dl>
+
+
+
+<p style="text-align: left;"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;">&nbsp; &nbsp;In this article I will demonstrate how to easily run javascript files from within the Eclipse IDE using Mozilla's Rhino javascript engine.&nbsp;<br>&nbsp; &nbsp;First off download the latest version of the&nbsp;<a href="https://developer.mozilla.org/en-US/docs/Rhino/Downloads_archive?redirectlocale=en-US&amp;redirectslug=Rhino_downloads_archive" style="text-decoration: none;">Rhino downloads archive</a>&nbsp;(for this demonstration I will be using&nbsp;<strong>Rhino 1.7R4&nbsp;</strong>and&nbsp;<strong>Eclipse 4.2 - Juno</strong>).&nbsp;Unzip the downloaded archive to an appropriate location. From the Eclipse IDE create a new external configuration&nbsp;(<strong>Run</strong>&nbsp;-&gt;&nbsp;<strong>External Tools</strong>&nbsp;-&gt;&nbsp;<strong>External Tools Configurations</strong>)&nbsp;as follows:&nbsp;<span style="color: #333333; font-family: &#39;Lucida Grande&#39;, &#39;Lucida Sans Unicode&#39;, &#39;DejaVu Sans&#39;, Lucida, Arial, Helvetica, sans-serif; font-size: 14px; line-height: 18px;"><br></span></span></p>
+<p style="text-align: left;"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;">&nbsp;<img src="./Running javascript from Eclipse_files/running_javascript_under_eclipse.gif" alt=""></span></p>
+<p style="text-align: left;"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;">&nbsp;<strong>1.</strong>&nbsp;Click on the&nbsp;<strong>Program</strong>&nbsp;button.<br>&nbsp;<strong>2.</strong>&nbsp;Click on the&nbsp;<strong>New launch configuration</strong>&nbsp;button.<br>&nbsp;<strong>3.</strong>&nbsp;Give a sample name on the run configuration (e.g.&nbsp;<strong>rhino_javascript</strong>).&nbsp;<br>&nbsp;<strong>4.</strong>&nbsp;Specify the path to java.exe from the java runtime installation directory (assuming java 6 is &nbsp;already installed on your machine)<br>&nbsp;<strong>5.</strong>&nbsp;For the working directory specify the directory where the Rhino installation arhive is unzipped (it should contain the&nbsp;<strong>js.jar</strong>&nbsp;file)<br>&nbsp;<strong>6.&nbsp;</strong>For the program arguments specify:</span></p>
+<p style="text-align: left;"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;">&nbsp; &nbsp; &nbsp; &nbsp;jar -js ${resource_loc}</span></p>
+<p style="text-align: left;"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;">&nbsp; &nbsp; This means that we will be executing the Rhino console against the currently selected file in Eclipse (should be a javascript file).<br>Now when you have selected a javascript file (e.g. from the Package explorer) you can execute it by running the already created external configuration:</span></p>
+<p style="text-align: left;"><span style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12pt;"><img src="./Running javascript from Eclipse_files/running_javascript_under_eclipse2.gif" alt=""></span></p>
+<p style="text-align: left;"><span face="tahoma, arial, helvetica, sans-serif" style="font-family: tahoma, arial, helvetica, sans-serif;">That's it! Have a nice javascripting under Eclipse :)</span></p>
+<p style="text-align: left;">&nbsp;</p> <div class="cmp_buttons_container" style="height:40px;"><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div><div class="cmp_like_container" style="float:left;margin:10px;"><fb:like href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse" layout="button_count" show_faces="true" send="true" width="" action="like" font="arial" colorscheme="light" class=" fb_iframe_widget" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=&amp;color_scheme=light&amp;container_width=0&amp;font=arial&amp;href=https%3A%2F%2Fmartin-toshev.com%2Findex.php%2Fsoftware-engineering%2Ftips-and-tricks%2F76-running-javascript-from-eclipse&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=true&amp;show_faces=true&amp;width="><span style="vertical-align: bottom; width: 0px; height: 0px;"><iframe name="f4c15a362c5eaf342" width="1000px" height="1000px" data-testid="fb:like Facebook Social Plugin" title="fb:like Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="./Running javascript from Eclipse_files/like.html" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: visible; width: 0px; height: 0px;" class=""></iframe></span></fb:like>
+</div><div class="cmp_twitter_container" style="float:left;margin:10px;"><iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="X Post Button" src="./Running javascript from Eclipse_files/tweet_button.1227a5674072e080ffb1ba14ac0c1079.en-gb.html" style="position: static; visibility: visible; width: 65px; height: 20px;" data-url="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse"></iframe>
+</div><div class="cmp_google_container" style="float:left;margin:10px;"><div id="___plusone_0" style="position: absolute; width: 450px; left: -10000px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position:absolute;top:-10000px;width:450px;margin:0px;border-style:none" tabindex="0" vspace="0" width="100%" id="I0_1786620618823" name="I0_1786620618823" src="./Running javascript from Eclipse_files/fastbutton.html" data-gapiattached="true"></iframe></div><g:plusone size="medium" href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse" data-gapiscan="true" data-onload="true" data-gapistub="true"></g:plusone>
+</div><div class="cmp_in_container" style="float:left;margin:10px;"><script type="IN/Share" data-url="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse" data-counter="right"></script>
+</div><div class="cmp_share_container" style="float:right;margin:10px;"><script>function fbs_click() {u="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse";t="Running javascript from Eclipse";var left = (screen.width/2)-328;var top = (screen.height/2)-218;window.open("//www.facebook.com/sharer.php?u=https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse&amp;t=Running javascript from Eclipse","Sharer","toolbar=0, location=0, directories=0, status=0, menubar=0, scrollbars=0, resizable=0, copyhistory=0, width=656, height=436, top="+top+", left="+left); return false;}</script><style>.cmp_shareicontextlink {   text-decoration: none; line-height: 20px;height: 20px; color: #3B5998; font-size: 11px; font-family: arial, sans-serif;  padding:2px 4px 2px 20px; border:1px solid #CAD4E7; cursor: pointer;  background:url(//static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat 1px 1px #ECEEF5; -webkit-border-radius: 3px; -moz-border-radius: 3px;} .cmp_shareicontextlink:hover {   background:url(//static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat 1px 1px #ECEEF5 !important;  border-color:#9dacce !important; color: #3B5998 !important;} </style><a class="cmp_shareicontextlink" href="https://www.facebook.com/share.php?u=https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse" share_url="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse" onclick="return fbs_click()" target="_blank">Share</a>
+</div></div><div id="fbcom497818930" class="cmp_comments_container" style="border-top-style:solid;border-top-width:1px;padding:10px;text-align:center;"><fb:comments href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse" num_posts="10" width="450" colorscheme="light" class=" fb_iframe_widget fb_iframe_widget_fluid_desktop" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;color_scheme=light&amp;container_width=0&amp;height=100&amp;href=https%3A%2F%2Fmartin-toshev.com%2Findex.php%2Fsoftware-engineering%2Ftips-and-tricks%2F76-running-javascript-from-eclipse&amp;locale=en_US&amp;sdk=joey&amp;skin=light&amp;width=450"><span style="vertical-align: bottom; width: 0px; height: 0px;"><iframe name="f39aa7dbe9f1d4fef" width="450px" height="100px" data-testid="fb:comments Facebook Social Plugin" title="fb:comments Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="./Running javascript from Eclipse_files/comments.html" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: visible; width: 0px; height: 0px;" class=""></iframe></span></fb:comments></div>
+				<ul class="pagenav">
+					<li class="pagenav-prev">
+						<a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/78-lessons-learned-from-failed-programming-interviews" rel="prev">&lt; Prev</a>
+					</li>
+					<li class="pagenav-next">
+						<a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/82-solving-the-jar-hell-problem-in-maven" rel="next">Next &gt;</a>
+					</li>
+				</ul>
+	
+</div>
+
+
+                                                </div><!-- end main -->
+
+                                        </div><!-- end wrapper -->
+
+                                
+                        
+                                <div class="wrap"></div>
+
+                                </div>
+			<!-- end contentarea -->
+
+		</div>
+		<!-- back -->
+
+	</div>
+	<!-- all -->
+
+	<div id="footer-outer">
+
+
+	
+                        <div id="footer-sub">
+
+
+                                <div id="footer">
+                                        
+<div class="footer" style="text-align:;">
+Copyright&nbsp;©&nbsp;2026&nbsp;Martin Toshev</div>
+
+                                </div><!-- end footer -->
+
+                        </div>
+
+                </div>
+	
+
+
+<div id="sbox-overlay" aria-hidden="true" tabindex="-1" style="z-index: 65555; opacity: 0;"></div><div id="sbox-window" role="dialog" aria-hidden="true" class="shadow" style="z-index: 65557;"><div id="sbox-content" style="opacity: 0;"></div><a id="sbox-btn-close" href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/76-running-javascript-from-eclipse#" role="button" aria-controls="sbox-window"></a></div><iframe scrolling="no" frameborder="0" allowtransparency="true" src="./Running javascript from Eclipse_files/widget_iframe.1227a5674072e080ffb1ba14ac0c1079.html" title="Twitter settings iframe" style="display: none;"></iframe><iframe name="oauth2relay552205450" id="oauth2relay552205450" src="./Running javascript from Eclipse_files/postmessageRelay.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" title="Twitter analytics iframe" src="./Running javascript from Eclipse_files/saved_resource.html"></iframe></body><rq-implicit-test-rule-widget class="rq-element" draggable="true" style="display: none;"><template shadowrootmode="closed">
+    <style>:host {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  top: 16px;
+  right: 16px;
+}
+
+#container {
+  border-radius: 1rem;
+  padding: 12px 1rem;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-family: system-ui;
+  background: #1a1a1a;
+  box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.16), 0px 16px 32px 0px rgba(0, 0, 0, 0.24);
+  border: 1px solid #5c5b5b;
+  cursor: move;
+  width: 420px;
+  transition: all 0.2s;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#container.minimized {
+  width: fit-content;
+  height: 56px;
+  padding: 6px;
+  border-radius: 20px;
+}
+
+#container.minimized #test-rule-container,
+#container.minimized #heading-container,
+#container.minimized #info-container {
+  display: none;
+}
+
+#rule-name {
+  font-size: 12px;
+  margin: 4px 0;
+  font-weight: bolder;
+  line-height: 1.4;
+  max-width: 290px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+#logo-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#heading-container div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+#actions-container {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+#actions-container button {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#actions-container #close-button svg {
+  width: 10px;
+  height: 10px;
+}
+
+#actions-container button:hover {
+  background: #383838;
+}
+
+#explicit-widget-container {
+  background: #282828;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+#implicit-widget-container {
+  padding: 0 4px;
+  margin-top: 8px;
+}
+
+#rule-status-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#test-rule-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+#info-container {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 0px;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+#info-icon {
+  align-self: flex-start;
+  width: 16px;
+  height: 16px;
+  color: #bbb;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#info-text {
+  color: #fff;
+  font-size: 11px;
+  line-height: 17px;
+}
+
+#info-text .link {
+  color: #639ff9;
+  font-size: inherit;
+  line-height: 17px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+}
+
+#rule-status-comment {
+  align-self: center;
+}
+
+#heading-logo {
+  height: 16px;
+  width: 16px;
+}
+
+#logo-text {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+#view-result-btn {
+  all: unset;
+  background: #1e69ff;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+#view-result-btn:hover {
+  cursor: pointer;
+  border-color: #0f4cd9;
+  background: #0f4cd9;
+}
+
+#rule-status {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+#rule-applied-status,
+#rule-not-applied-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 1px;
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: -3px;
+}
+
+#rule-applied-status {
+  color: #28c07a;
+}
+
+#rule-not-applied-status {
+  color: #e09400;
+}
+
+#minimized-details {
+  display: none;
+  pointer-events: none;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+}
+
+#minimized-details.visible {
+  display: flex;
+  pointer-events: auto;
+}
+
+#minimized-logo svg {
+  height: 16px;
+  width: 16px;
+}
+
+#test-rule-minimized-btn {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+#test-rule-minimized-btn span {
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+#test-rule-minimized-btn span svg {
+  height: 20px;
+  width: 20px;
+}
+
+.secondary-text {
+  font-size: 11px;
+  color: #b0b0b5b3;
+}
+
+.hidden {
+  display: none !important;
+}
+
+a {
+  color: #9370db;
+}
+
+.warning {
+  background: #5c3111;
+}
+
+.success {
+  background: #104b2f;
+}
+
+#applied-rules-list {
+  margin-top: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+#applied-rules-list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+#applied-rules-list::-webkit-scrollbar-thumb {
+  background: #353535;
+  border-radius: 8px;
+}
+
+#applied-rules-list-header {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.applied-rule-list-item {
+  border-radius: 8px;
+  background: #282828;
+  padding: 12px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.applied-rule-list-item:hover {
+  background: #383838;
+}
+
+.applied-rule-list-item:hover .applied-rule-arrow-icon {
+  opacity: 1;
+}
+
+.applied-rule-list-item:first-child {
+  margin-top: 0;
+}
+
+.applied-rule-item-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.applied-rule-icon {
+  align-self: center;
+}
+
+.applied-rule-icon svg {
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 2px;
+}
+
+.applied-rule-arrow-icon {
+  transform: scale(1.2);
+  align-self: center;
+  transition: 0.2s all;
+  opacity: 0;
+}
+
+.applied-rule-name {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#settings-button {
+  position: relative;
+}
+
+#settings-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+
+  position: absolute;
+  z-index: 1;
+  right: 0px;
+  top: 34px;
+  width: 158px;
+  max-width: 232px;
+  padding: 6px 12px;
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  border-radius: 4px;
+  background: #000;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.16);
+}
+
+.test-rule-widget-progress-bar {
+  height: 6px;
+  background: #3c7ff3;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  animation-name: progressBar;
+  animation-delay: 50ms;
+  animation-direction: normal;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  animation-timing-function: linear;
+}
+
+#container:hover .test-rule-widget-progress-bar {
+  animation-play-state: paused;
+}
+
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}
+</style>
+    <div id="container">
+        <div id="minimized-details">
+            <div id="minimized-logo"><svg width="251" height="251" viewBox="0 0 251 251" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M124.408 245.868V188.238C104.504 188.529 82.7544 186.943 60.1611 182.339L60.0545 182.235V216.575C60.0545 223.437 60.7942 228.978 62.2736 233.201C63.7529 237.423 65.8487 240.722 68.5609 243.097C71.5197 245.472 75.0949 247.055 79.2864 247.847C83.7246 248.903 88.7791 249.43 94.4501 249.43C100.121 249.43 105.792 249.035 111.463 248.243C117.381 247.451 121.695 246.66 124.408 245.868Z" fill="white"></path>
+<path d="M124.408 169.866H127.147C152.451 169.356 180.05 165.599 203.571 154.848L203.554 154.824C214.403 148.49 223.773 139.518 231.663 127.906C239.553 116.295 243.498 102.308 243.498 85.9467C243.498 59.821 234.868 39.1052 217.609 23.7992C200.349 8.4932 174.707 0.84021 140.681 0.84021C128.106 0.84021 116.271 1.6319 105.176 3.21527C94.0803 4.53475 84.341 6.77789 75.9578 9.94465C71.0266 11.7919 67.0816 14.2989 64.1228 17.4657C61.4106 20.3685 60.0545 24.5909 60.0545 30.1327V96.5095C71.3817 98.242 114.382 101.954 124.038 101.543V57.8418C126.75 57.314 129.216 56.9182 131.435 56.6543C133.654 56.3904 136.612 56.2584 140.311 56.2584C153.379 56.2584 162.871 58.8974 168.789 64.1753C174.953 69.1893 178.035 76.7103 178.035 86.7384C178.035 96.7664 175.323 104.419 169.899 109.697C164.474 114.711 157.077 117.218 147.708 117.218H124.038V117.008C123.974 117.109 123.915 117.21 123.861 117.313C87.9797 115.588 66.1922 114.066 60.0404 113.204L60.0399 113.194L42.9936 111.502C41.4373 111.348 40.2998 109.961 40.4529 108.404L41.3754 99.0229C41.6423 96.3086 38.2948 94.8199 36.4615 96.8375L0.888601 135.986C-0.0859492 137.058 -0.0924867 138.694 0.873451 139.776L29.4492 171.786C31.0921 173.627 34.1369 172.635 34.3782 170.181L35.0406 163.445C35.2015 161.809 36.7162 160.655 38.336 160.934L60.0545 164.671V164.802L60.1611 164.695C73.4489 166.933 97.4782 170.207 124.408 169.908V169.866Z" fill="white"></path>
+<path d="M175.076 223.305L153.644 186.439C181.486 183.412 203.494 177.208 215.783 172.246C220.496 178.807 225.172 185.139 229.813 191.241C238.443 202.589 245.224 212.881 250.155 222.117C247.689 231.354 243.128 238.479 236.471 243.493C230.06 248.243 222.786 250.618 214.65 250.618C209.225 250.618 204.541 249.958 200.596 248.639C196.651 247.319 193.199 245.472 190.24 243.097C187.281 240.722 184.569 237.819 182.103 234.388C179.638 230.958 177.295 227.263 175.076 223.305Z" fill="white"></path>
+</svg></div>
+            <button id="test-rule-minimized-btn"><span class="success"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_2834_1705" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect width="16" height="16" fill="#D9D9D9"></rect>
+</mask>
+<g mask="url(#mask0_2834_1705)">
+<path d="M7.13333 10.4833L11.1667 6.46667L10.2 5.5L7.13333 8.56667L5.76667 7.2L4.81667 8.16667L7.13333 10.4833ZM8 14.5333C7.1 14.5333 6.25 14.3667 5.45 14.0333C4.66111 13.6889 3.96667 13.2222 3.36667 12.6333C2.77778 12.0333 2.31111 11.3389 1.96667 10.55C1.63333 9.75 1.46667 8.9 1.46667 8C1.46667 7.08889 1.63333 6.23889 1.96667 5.45C2.31111 4.66111 2.77778 3.97222 3.36667 3.38333C3.96667 2.78333 4.66111 2.31667 5.45 1.98333C6.25 1.63889 7.1 1.46667 8 1.46667C8.91111 1.46667 9.76111 1.63889 10.55 1.98333C11.3389 2.31667 12.0278 2.78333 12.6167 3.38333C13.2167 3.97222 13.6833 4.66111 14.0167 5.45C14.3611 6.23889 14.5333 7.08889 14.5333 8C14.5333 8.9 14.3611 9.75 14.0167 10.55C13.6833 11.3389 13.2167 12.0333 12.6167 12.6333C12.0278 13.2222 11.3389 13.6889 10.55 14.0333C9.76111 14.3667 8.91111 14.5333 8 14.5333ZM8 13.15C9.43333 13.15 10.65 12.65 11.65 11.65C12.65 10.65 13.15 9.43333 13.15 8C13.15 6.56667 12.65 5.35 11.65 4.35C10.65 3.35 9.43333 2.85 8 2.85C6.56667 2.85 5.35 3.35 4.35 4.35C3.35 5.35 2.85 6.56667 2.85 8C2.85 9.43333 3.35 10.65 4.35 11.65C5.35 12.65 6.56667 13.15 8 13.15Z" fill="#28C07A"></path>
+</g>
+</svg></span></button>
+        </div>
+        <div id="heading-container">
+            <div id="logo-container">
+                <span id="heading-logo"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+  <path d="M7.98439 15.6591V11.9822C6.71565 12.0008 5.32921 11.8996 3.88899 11.6058L3.8822 11.5992V13.7902C3.8822 14.2279 3.92935 14.5815 4.02366 14.8509C4.11796 15.1203 4.25156 15.3307 4.42445 15.4823C4.61305 15.6338 4.84095 15.7348 5.10814 15.7853C5.39105 15.8527 5.71325 15.8864 6.07475 15.8864C6.43625 15.8864 6.79774 15.8611 7.15924 15.8106C7.53645 15.7601 7.8115 15.7096 7.98439 15.6591Z" fill="url(#paint0_linear_2826_2722)"></path>
+  <path d="M7.98439 10.81H8.15909C9.77207 10.7775 11.5313 10.5378 13.0307 9.85185L13.0296 9.85029C13.7212 9.4462 14.3184 8.87374 14.8214 8.13291C15.3243 7.39208 15.5758 6.49972 15.5758 5.45582C15.5758 3.78896 15.0257 2.46725 13.9255 1.4907C12.8253 0.514153 11.1907 0.0258789 9.02172 0.0258789C8.22015 0.0258789 7.46572 0.0763902 6.75845 0.177412C6.05117 0.261597 5.43035 0.404713 4.89596 0.606758C4.58162 0.724617 4.33014 0.884567 4.14154 1.08661C3.96865 1.27182 3.8822 1.54121 3.8822 1.89479V6.12974C4.60426 6.24028 7.34528 6.47711 7.96081 6.45089V3.66268C8.1337 3.629 8.29087 3.60375 8.43233 3.58691C8.57378 3.57008 8.76239 3.56166 8.99815 3.56166C9.83116 3.56166 10.4363 3.73003 10.8135 4.06677C11.2064 4.38667 11.4029 4.86653 11.4029 5.50633C11.4029 6.14614 11.23 6.63442 10.8842 6.97116C10.5384 7.29106 10.0669 7.45101 9.46966 7.45101H7.96081V7.43758C7.95673 7.44399 7.95296 7.45048 7.94952 7.45705C5.66229 7.347 4.27345 7.24991 3.8813 7.19488L3.88127 7.19426L2.79467 7.08629C2.69546 7.07644 2.62295 6.98802 2.63269 6.88881L2.69152 6.29001C2.70853 6.11695 2.49506 6.02204 2.37823 6.15072L0.11053 8.64856C0.0484818 8.71691 0.0480731 8.82113 0.109583 8.89009L1.93123 10.9325C2.03594 11.0499 2.2301 10.9867 2.24547 10.8302L2.28772 10.4002C2.29797 10.2959 2.39452 10.2223 2.49778 10.2401L3.8822 10.4785V10.4869L3.88899 10.4801C4.73603 10.6229 6.26777 10.8318 7.98439 10.8127V10.81Z" fill="url(#paint1_linear_2826_2722)"></path>
+  <path d="M11.2143 14.2195L9.8481 11.8674C11.6229 11.6743 13.0258 11.2785 13.8091 10.9619C14.1095 11.3805 14.4076 11.7844 14.7035 12.1738C15.2536 12.8978 15.6858 13.5544 16.0002 14.1437C15.843 14.733 15.5522 15.1876 15.1279 15.5075C14.7192 15.8106 14.2556 15.9621 13.7369 15.9621C13.3911 15.9621 13.0925 15.92 12.841 15.8359C12.5895 15.7517 12.3695 15.6338 12.1809 15.4823C11.9923 15.3307 11.8194 15.1455 11.6622 14.9267C11.505 14.7078 11.3557 14.4721 11.2143 14.2195Z" fill="url(#paint2_linear_2826_2722)"></path>
+  <path d="M0.0637207 8.77344C0.0645556 8.81521 0.0798203 8.85677 0.109546 8.8901L1.93119 10.9325C2.03591 11.0499 2.23006 10.9867 2.24543 10.8302L2.28769 10.4002C2.29793 10.2959 2.39449 10.2223 2.49774 10.2401L3.88216 10.4785V10.4869L3.88896 10.4801C4.73599 10.6229 6.26774 10.8318 7.98435 10.8127V10.81H8.01892V9.21903L0.0637207 8.77344Z" fill="url(#paint3_linear_2826_2722)"></path>
+  <path d="M8.01896 9.21922L0.0637569 8.77363C0.0628642 8.72897 0.0784679 8.68408 0.11053 8.64876L2.37823 6.15092C2.49506 6.02224 2.70853 6.11715 2.69152 6.29021L2.63269 6.88901C2.62295 6.98822 2.69546 7.07664 2.79467 7.08649L3.88127 7.19446L3.8813 7.19508C4.27345 7.2501 5.66229 7.3472 7.94952 7.45725C7.95296 7.45068 7.95673 7.44419 7.96081 7.43778V7.45121H8.01896V9.21922Z" fill="url(#paint4_linear_2826_2722)"></path>
+  <defs>
+    <lineargradient id="paint0_linear_2826_2722" x1="3.76992" y1="-1.50587" x2="13.212" y2="19.2702" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint1_linear_2826_2722" x1="3.76992" y1="-1.50587" x2="13.212" y2="19.2702" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint2_linear_2826_2722" x1="3.76992" y1="-1.50587" x2="13.212" y2="19.2702" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint3_linear_2826_2722" x1="11.8972" y1="9.83355" x2="5.27078" y2="8.10349" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint4_linear_2826_2722" x1="2.63345" y1="4.98671" x2="14.7158" y2="6.53243" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+  </defs>
+</svg></span>
+                <span id="logo-text">requestly</span>
+            </div>
+            <div id="actions-container">
+                <button id="settings-button" class="" data-tooltip="Hide widget in app settings"><svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.6167 6.91667L9.58333 5.88333C9.62778 5.46111 9.5 5.1 9.2 4.8C8.9 4.48889 8.53889 4.35556 8.11667 4.4L7.08333 3.36667C7.22778 3.31111 7.37778 3.27222 7.53333 3.25C7.68889 3.21667 7.84444 3.2 8 3.2C8.77778 3.2 9.43889 3.47222 9.98333 4.01667C10.5278 4.56111 10.8 5.22222 10.8 6C10.8 6.15556 10.7833 6.31111 10.75 6.46667C10.7278 6.62222 10.6833 6.77222 10.6167 6.91667ZM12.8333 9.13333L11.9667 8.26667C12.3667 7.95556 12.7278 7.61667 13.05 7.25C13.3833 6.87222 13.6611 6.45556 13.8833 6C13.3389 4.87778 12.5333 4 11.4667 3.36667C10.4111 2.72222 9.25556 2.4 8 2.4C7.71111 2.4 7.42778 2.41667 7.15 2.45C6.87222 2.48333 6.6 2.53889 6.33333 2.61667L5.36667 1.65C5.78889 1.48333 6.21667 1.36667 6.65 1.3C7.09444 1.23333 7.54444 1.2 8 1.2C9.58889 1.2 11.0389 1.63333 12.35 2.5C13.6722 3.35556 14.6222 4.52222 15.2 6C14.9556 6.63333 14.6278 7.21111 14.2167 7.73333C13.8167 8.24444 13.3556 8.71111 12.8333 9.13333ZM12.8 12.5L10.6333 10.3333C10.2111 10.4889 9.77778 10.6056 9.33333 10.6833C8.9 10.7611 8.45556 10.8 8 10.8C6.41111 10.8 4.95556 10.3722 3.63333 9.51667C2.32222 8.65 1.37778 7.47778 0.800001 6C1.04444 5.36667 1.36667 4.78889 1.76667 4.26667C2.16667 3.74444 2.63333 3.27222 3.16667 2.85L1.5 1.18333L2.35 0.333334L13.65 11.65L12.8 12.5ZM4.01667 3.71667C3.62778 4.02778 3.26667 4.37222 2.93333 4.75C2.6 5.11667 2.32778 5.53333 2.11667 6C2.66111 7.12222 3.46111 8.00556 4.51667 8.65C5.58333 9.28333 6.74444 9.6 8 9.6C8.28889 9.6 8.57222 9.58333 8.85 9.55C9.12778 9.50556 9.40556 9.45 9.68333 9.38333L8.93333 8.63333C8.77778 8.68889 8.62222 8.73333 8.46667 8.76667C8.31111 8.78889 8.15556 8.8 8 8.8C7.22222 8.8 6.56111 8.52778 6.01667 7.98333C5.47222 7.43889 5.2 6.77778 5.2 6C5.2 5.84444 5.21667 5.68889 5.25 5.53333C5.29445 5.37778 5.33333 5.22222 5.36667 5.06667L4.01667 3.71667Z" fill="white"></path>
+</svg></button>
+                <button id="minimize-button" class="hidden"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_2826_2732" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect width="16" height="16" fill="#D9D9D9"></rect>
+</mask>
+<g mask="url(#mask0_2826_2732)">
+<path d="M6.27083 4.75L8.5 6.95833V5.27083H10V9.5H5.75V8H7.4375L5.22917 5.79167L6.27083 4.75ZM13.75 14C13.125 14 12.5903 13.7847 12.1458 13.3542C11.7153 12.9097 11.5 12.375 11.5 11.75C11.5 11.125 11.7153 10.5972 12.1458 10.1667C12.5903 9.72222 13.125 9.5 13.75 9.5C14.375 9.5 14.9028 9.72222 15.3333 10.1667C15.7778 10.5972 16 11.125 16 11.75C16 12.375 15.7778 12.9097 15.3333 13.3542C14.9028 13.7847 14.375 14 13.75 14ZM1.5 14C1.08333 14 0.729167 13.8542 0.4375 13.5625C0.145833 13.2708 1.78814e-07 12.9167 1.78814e-07 12.5V3.5C1.78814e-07 3.08333 0.145833 2.72917 0.4375 2.4375C0.729167 2.14583 1.08333 2 1.5 2H14.5C14.9167 2 15.2708 2.14583 15.5625 2.4375C15.8542 2.72917 16 3.08333 16 3.5V8H14.5V3.5H1.5V12.5H10V14H1.5Z" fill="white"></path>
+</g>
+</svg>
+                </button><button id="close-button" class=""><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.167368 0.167368C0.390524 -0.0557892 0.752333 -0.0557892 0.97549 0.167368L4 3.19188L7.02451 0.167368C7.24767 -0.0557892 7.60948 -0.0557892 7.83263 0.167368C8.05579 0.390524 8.05579 0.752333 7.83263 0.97549L4.80812 4L7.83263 7.02451C8.05579 7.24767 8.05579 7.60948 7.83263 7.83263C7.60948 8.05579 7.24767 8.05579 7.02451 7.83263L4 4.80812L0.97549 7.83263C0.752333 8.05579 0.390524 8.05579 0.167368 7.83263C-0.0557892 7.60948 -0.0557892 7.24767 0.167368 7.02451L3.19188 4L0.167368 0.97549C-0.0557892 0.752333 -0.0557892 0.390524 0.167368 0.167368Z" fill="#E3E3E3"></path>
+</svg>
+            </button></div>
+        </div>
+        <div id="test-rule-container">
+    <div id="implicit-widget-container">
+    <div id="applied-rules-list-header">Rules applied on this page</div>
+    <div id="applied-rules-list"></div>
+    <div class="test-rule-widget-progress-bar">
+    </div></div></div>
+         <div id="info-container" class="hidden">
+          <div id="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
+  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z" fill="currentColor"></path>
+</svg></div>
+          <div id="info-text"></div>
+        </div>
+    </div>
+    </template></rq-implicit-test-rule-widget></html>

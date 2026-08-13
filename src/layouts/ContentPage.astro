@@ -1,0 +1,26 @@
+---
+import { getEntry, render } from 'astro:content';
+import BlogArticle from './BlogArticle.astro';
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const page = await getEntry('pages', slug);
+
+if (!page) {
+  throw new Error(`Missing src/content/pages/${slug}.md content entry.`);
+}
+
+const { Content, headings } = await render(page);
+---
+
+<BlogArticle
+  post={page}
+  headings={headings}
+  sidebar={{ enable: false, toc: true, relatedPosts: false, ...page.data.sidebar }}
+  contentFont="ui"
+>
+  <Content />
+</BlogArticle>

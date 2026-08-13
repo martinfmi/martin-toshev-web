@@ -1,0 +1,294 @@
+[config.site]
+title = "Martin Toshev"
+description = "IT consultant, Java enthusiast, speaker, author, and trainer."
+pageTitle = "Martin Toshev | Architecture, Security & the JVM"
+pageDescription = "Personal site of Martin Toshev — consulting, conferences, speaking, security, books, trainings, and technical writing."
+url = "https://www.martin-toshev.com"
+repository = "https://github.com/martinfmi"
+footerNote = "Sharing knowledge across the Java ecosystem."
+
+[config.theme]
+# Available palettes:
+# green-soft, green-vivid, rose-soft, pink-soft, purple-soft, blue-soft, orange-soft, brown-soft
+palette = "blue-soft"
+lang = "en"
+
+[config.fonts]
+en = "Maple Mono"
+code = "Monaco"
+zh = "ChillRoundM"
+file = "/fonts/ChillRoundM.ttf"
+
+[config.code]
+lightTheme = "catppuccin-latte"
+darkTheme = "catppuccin-macchiato"
+lineNumbers = true
+wrap = true
+preserveIndent = true
+collapseStyle = "collapsible-auto"
+
+[config.math]
+render = "katex"
+
+[config.comments]
+enabled = false
+provider = "none"
+show_on_posts = true
+
+[config.search]
+enabled = true
+shortcut = "mod+k"
+placeholder = "Search articles..."
+maxResults = 8
+
+[config.pages.blog]
+title = "Blog"
+kicker = "Notes & reports"
+subtitle = "Architecture, security, tools, and community."
+note = "Articles migrated from the original martin-toshev.com archive, plus newer notes."
+postsPerPage = 8
+dateFormat = "yyyy-MM-dd"
+metadataSeparator = "icon"
+coverImageStyle = "mask"
+
+[config.pages.blog.categories]
+title = "Categories"
+kicker = "Browse topics"
+subtitle = ""
+note = "Architecture, Security, Tools, Tips and Tricks, and Events."
+
+[config.pages.blog.series]
+title = "Series"
+kicker = "Reading paths"
+subtitle = ""
+note = "Connected notes that can be followed in order."
+
+[config.pages.projects]
+title = "Projects"
+kicker = "Open source"
+subtitle = "Selected repositories and materials."
+note = "Teaching materials, demos, and workshop code."
+
+[config.pages.vibe]
+title = "vibe"
+kicker = ""
+subtitle = "Short notes."
+note = "Quick fragments and updates."
+showTrail = true
+
+[config.pages.media]
+title = "Media"
+subtitle = "Books and related materials."
+note = "Published books and references."
+
+[config.comments.giscus]
+repo = ""
+repo_id = ""
+category = ""
+category_id = ""
+mapping = "pathname"
+strict = "0"
+reactions_enabled = "1"
+emit_metadata = "0"
+input_position = "top"
+light_theme = "light"
+dark_theme = "dark"
+lang = "en"
+loading = "lazy"
+
+[config.comments.utterances]
+repo = ""
+issue_term = "pathname"
+label = "comment"
+theme = "github-light"
+
+[config.comments.waline]
+server_url = ""
+lang = "en"
+dark = "html.dark"
+pageview = true
+comment = true
+
+[config.profile]
+name = "Martin Toshev"
+handle = "@martinfmi"
+role = "IT Consultant · Java · Security"
+email = "contact@martin-toshev.com"
+website = "https://www.martin-toshev.com/"
+github = "https://github.com/martinfmi"
+avatar = "/images/martin-toshev.png"
+
+[[config.topNav.links]]
+label = "Overview"
+href = "/about"
+
+[[config.topNav.links]]
+label = "Conferences"
+href = "/conferences"
+
+[[config.topNav.links]]
+label = "Speaking"
+href = "/speaking"
+
+[[config.topNav.links]]
+label = "Security"
+href = "/security"
+
+[[config.topNav.links]]
+label = "Books"
+href = "/books"
+
+[[config.topNav.links]]
+label = "Trainings"
+href = "/trainings"
+
+[[config.topNav.links]]
+label = "Academy"
+href = "/academy"
+
+[[config.topNav.links]]
+label = "Blog"
+href = "/blog"
+children = [
+  { label = "Architecture", href = "/blog/categories/architecture/" },
+  { label = "Security", href = "/blog/categories/security/" },
+  { label = "Tools", href = "/blog/categories/tools/" },
+  { label = "Tips and Tricks", href = "/blog/categories/tips-and-tricks/" },
+  { label = "Events", href = "/blog/categories/events/" },
+]
+
+[config.home]
+
+[config.home.quote]
+text = [
+  "Hard problems,",
+  "shared knowledge,",
+  "and the JVM ecosystem.",
+]
+
+[config.home.intro]
+title = "Martin Toshev"
+name = "Martin Toshev"
+body = [
+  "IT consultant, Java enthusiast, conference speaker, author, and trainer based in Sofia.",
+  "I help teams with architecture, platform security, messaging, search, and large-scale data processing — and I share what I learn through talks, books, and workshops.",
+  "Explore conferences, speaking history, security materials, trainings, and the article archive from the original site.",
+]
+
+[config.home.latest]
+count = 3
+heatmapWeeks = 24
+showHeatmapLatest = true
+excludeDraft = true
+startDate = ""
+dateArchiveBaseHref = ""
+
+[[config.home.navigation]]
+icon = "compass"
+title = "Overview"
+subtitle = "Bio, focus areas, and background"
+href = "/about"
+
+[[config.home.navigation]]
+icon = "pen"
+title = "Blog"
+subtitle = "Architecture, tools, security, events"
+href = "/blog"
+
+[[config.home.navigation]]
+icon = "briefcase"
+title = "Speaking"
+subtitle = "Conference talks and meetups"
+href = "/speaking"
+
+[[config.home.navigation]]
+icon = "github"
+title = "GitHub"
+subtitle = "Open-source trainings and demos"
+href = "https://github.com/martinfmi"
+
+[[config.home.links]]
+label = "GitHub"
+icon = "github"
+tooltip = "https://github.com/martinfmi"
+copy = false
+
+[[config.home.links]]
+label = "LinkedIn"
+icon = "linkedin"
+tooltip = "https://www.linkedin.com/in/martin-toshev-07046127/"
+copy = false
+
+[[config.home.links]]
+label = "X"
+icon = "x"
+tooltip = ""
+copy = false
+
+[[config.home.links]]
+label = "RSS"
+icon = "rss"
+tooltip = "/rss.xml"
+copy = false
+
+[[config.home.links]]
+label = "Email"
+icon = "mail"
+tooltip = "contact@martin-toshev.com"
+copy = true
+
+[[config.home.links]]
+label = "QQ"
+icon = "qq"
+tooltip = ""
+copy = true
+
+[[config.home.links]]
+label = "WeChat"
+icon = "wechat"
+tooltip = ""
+copy = true
+
+[[config.home.links]]
+label = "Weibo"
+icon = "weibo"
+tooltip = ""
+copy = false
+
+[[config.home.links]]
+label = "Xiaohongshu"
+icon = "xiaohongshu"
+tooltip = ""
+copy = false
+
+[[config.home.links]]
+label = "Zhihu"
+icon = "zhihu"
+tooltip = ""
+copy = false
+
+[[config.home.links]]
+label = "Bilibili"
+icon = "bilibili"
+tooltip = ""
+copy = false
+
+[[config.home.doing]]
+text = "Organizing and promoting ChurConf / Community Over Code Sydney"
+mark = "01"
+
+[[config.home.doing]]
+text = "Speaking on AI-driven reverse engineering and static analysis"
+mark = "02"
+
+[[config.home.doing]]
+text = "Consulting on JVM architecture and application security"
+mark = "03"
+
+[[config.home.doing]]
+text = "Maintaining open-source Java training materials"
+mark = "04"
+
+[[config.home.doing]]
+text = "Writing about tools, platforms, and conference experiences"
+mark = "05"

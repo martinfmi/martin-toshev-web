@@ -1,0 +1,1182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0131)https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=1&limitstart= -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr" slick-uniqueid="3"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script src="./Dissecting the Java Virtual Machine_files/cb=gapi.loaded_1" async=""></script><script src="./Dissecting the Java Virtual Machine_files/cb=gapi(1).loaded_0" async=""></script><script id="linkedin-js" async="true" src="./Dissecting the Java Virtual Machine_files/in.js.download"></script><script id="google-wjs" async="true" src="./Dissecting the Java Virtual Machine_files/plusone.js.download" gapi_processed="true">{lang: 'en-US'}</script><script src="./Dissecting the Java Virtual Machine_files/all.js.download" async="" crossorigin="anonymous"></script><script type="text/javascript">// <![CDATA[
+( function($) {
+    $(document).ready(function(){
+    $('.php li:nth-child(odd)').addClass('odListItem');
+    $('.php li:nth-child(even)').addClass('evenListItem');
+    $('.html4strict li:nth-child(odd)').addClass('odListItem');
+    $('.html4strict li:nth-child(even)').addClass('evenListItem');
+    $('.css li:nth-child(odd)').addClass('odListItem');
+    $('.css li:nth-child(even)').addClass('evenListItem');   
+    $('.javascript li:nth-child(odd)').addClass('odListItem');
+    $('.javascript li:nth-child(even)').addClass('evenListItem');       
+    });
+} ) ( jQuery );
+// ]]></script>
+
+  <!--<base href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine">--><base href=".">
+  
+  <meta name="keywords" content="Martin Toshev, algorithms, data structures, technology, Мартин Тошев, алгоритми, структури от данни, технологии">
+  <meta name="author" content="Martin Toshev">
+  <meta name="description" content="The personal web site of Martin Toshev with a focus on software engineering.
+Личен сайт на Мартин Тошев с фокус над софтуерното инженерство.">
+  <meta name="generator" content="Joomla! - Open Source Content Management">
+  <title>Dissecting the Java Virtual Machine</title>
+  <link href="https://martin-toshev.com/templates/martin_toshev/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+  <link href="https://martin-toshev.com/index.php/component/search/?showall=1&amp;Itemid=471&amp;catid=81&amp;id=80&amp;format=opensearch" rel="search" title="Search martin-toshev" type="application/opensearchdescription+xml">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/shCoreEclipse.css" type="text/css">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/shThemeEclipse.css" type="text/css">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/system.css" type="text/css">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/position.css" type="text/css" media="screen,projection">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/layout.css" type="text/css" media="screen,projection">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/print.css" type="text/css" media="print">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/general.css" type="text/css">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/personal.css" type="text/css">
+  <link rel="stylesheet" href="./Dissecting the Java Virtual Machine_files/modal.css" type="text/css">
+  <script src="./Dissecting the Java Virtual Machine_files/mootools-core.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/core.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/caption.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shCore.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushAS3.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushBash.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushCpp.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushCSharp.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushCss.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushDelphi.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushDiff.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushGroovy.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushJava.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushJavaFX.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushJScript.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushPerl.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushPhp.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushPlain.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushPowerShell.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushPython.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushRuby.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushScala.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushSql.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushVb.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/shBrushXml.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/all(1).js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/widgets.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/mootools-more.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/md_stylechanger.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/hide.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/custom.js.download" type="text/javascript"></script>
+  <script src="./Dissecting the Java Virtual Machine_files/modal.js.download" type="text/javascript"></script>
+  <script type="text/javascript">
+window.addEvent('load', function() {
+				new JCaption('img.caption');
+			});
+
+			  SyntaxHighlighter.all();
+		 
+
+          var js,fjs=document.getElementsByTagName('script')[0];
+          if(!document.getElementById('google-wjs')){
+            js=document.createElement('script');
+            js.id='google-wjs';
+            js.setAttribute('async', 'true');
+            js.src="//apis.google.com/js/plusone.js";
+            js.text="{lang: 'en-US'}";
+            fjs.parentNode.insertBefore(js,fjs);
+          }
+
+          var js,fjs=document.getElementsByTagName('script')[0];
+          if(!document.getElementById('linkedin-js')){
+            js=document.createElement('script');
+            js.id='linkedin-js';
+            js.setAttribute('async', 'true');
+            js.src="//platform.linkedin.com/in.js";
+            fjs.parentNode.insertBefore(js,fjs);
+          }
+		window.addEvent('domready', function() {
+
+			SqueezeBox.initialize({});
+			SqueezeBox.assign($$('a.modal'), {
+				parse: 'rel'
+			});
+		});
+  </script>
+  <meta property="og:type" content="article">
+<meta property="og:description" content="The personal web site of Martin Toshev with a focus on software engineering.
+Личен сайт на Мартин Тошев с фокус над софтуерното инженерство.">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/hotspot_architecture.gif">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/hotspot_directory_structure.gif">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/hotspot_architecture_diagram_1.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/classfile_structure.gif">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/hotspot_architecture_diagram_2.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/thread_diagram.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/stack_frame.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/bytecode_sample.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/class_data.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/non_heap_memory.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/heap_memory_data.png">
+<meta property="og:image" content="https://martin-toshev.com/images/articles/architectures/hotspot_architecture_diagram_3.png">
+<meta property="og:url" content="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine">
+<meta property="og:title" content="Dissecting the Java Virtual Machine">
+<meta property="my:fb" content="on">
+<meta property="my:google" content="on">
+<meta property="my:tw" content="on">
+<meta property="my:in" content="on">
+  <meta property="fb:admins" content="773119927">
+<meta property="fb:app_id" content="332443736848329">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="martin-toshev">
+
+
+
+<!--[if lte IE 6]>
+<link href="/templates/martin_toshev/css/ieonly.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+#line {
+	width:98% ;
+}
+.logoheader {
+	height:200px;
+}
+#header ul.menu {
+	display:block !important;
+	width:98.2% ;
+}
+</style>
+<![endif]-->
+
+<!--[if IE 7]>
+<link href="/templates/martin_toshev/css/ie7only.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+<script type="text/javascript">
+	var big ='72%';
+	var small='53%';
+	var altopen='is open';
+	var altclose='is closed';
+	var bildauf='/templates/martin_toshev/images/plus.png';
+	var bildzu='/templates/martin_toshev/images/minus.png';
+	var rightopen='Open info';
+	var rightclose='Close info';
+	var fontSizeTitle='Font size';
+	var bigger='Bigger';
+	var reset='Reset';
+	var smaller='Smaller';
+	var biggerTitle='Increase size';
+	var resetTitle='Revert styles to default';
+	var smallerTitle='Decrease size';
+</script>
+
+<style type="text/css"></style><style type="text/css" data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0px;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:lucida grande,tahoma,verdana,arial,sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:400;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{0%{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+
+.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0px;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:lucida grande,tahoma,verdana,arial,sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:400;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{0%{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+
+.fb_dialog{background:#525252b3;position:absolute;top:-10000px;z-index:10001}.fb_dialog_advanced{border-radius:8px;padding:10px}.fb_dialog_content{background:#fff;color:#373737}.fb_dialog_close_icon{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{left:5px;right:auto;top:5px}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://connect.facebook.net/rsrc.php/v4/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:700;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://connect.facebook.net/rsrc.php/v4/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{height:100%;left:0;margin:0;overflow:visible;position:absolute;top:-10000px;transform:none;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://connect.facebook.net/rsrc.php/v4/ya/r/3rhSv5V8j3o.gif) #fff no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{background:none;height:auto;min-height:initial;min-width:initial;width:auto}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{clear:both;color:#fff;display:block;font-size:18px;padding-top:20px}#fb-root #fb_dialog_ipad_overlay{background:#0006;inset:0;min-height:100%;position:absolute;width:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:sticky;top:0}.fb_dialog_content .dialog_header{background:linear-gradient(from(#738aba),to(#2c4987));border-bottom:1px solid;border-color:#043b87;box-shadow:#fff 0 1px 1px -1px inset;color:#fff;font:700 14px Helvetica,sans-serif;text-overflow:ellipsis;text-shadow:rgba(0,30,84,.296875) 0px -1px 0px;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:linear-gradient(from(#4267B2),to(#2a4887));background-clip:padding-box;border:1px solid #29487d;border-radius:3px;display:inline-block;line-height:18px;margin-top:3px;max-width:85px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{background:none;border:none;color:#fff;font:700 12px Helvetica,sans-serif;margin:2px -12px;padding:2px 6px 3px;text-shadow:rgba(0,30,84,.296875) 0px -1px 0px}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:700;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://connect.facebook.net/rsrc.php/v4/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #4A4A4A;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #4A4A4A;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://connect.facebook.net/rsrc.php/v4/y2/r/onuUJj0tCqE.png);background-position:50% 50%;background-repeat:no-repeat;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}
+</style><script charset="utf-8" src="./Dissecting the Java Virtual Machine_files/button.2276a045429f6681b56da5eb1dcfa53c.js.download"></script></head>
+
+<body style="font-size: 100%;">
+
+	<div id="all">
+		<div id="back">
+			<div id="header">
+				<div id="line">
+					<div id="fontsize"></div>
+					<h3 class="unseen">
+					Search</h3>
+					<form action="https://martin-toshev.com/index.php/software-engineering/architectures" method="post" role="search">
+	<div class="search">
+		<label for="mod-search-searchword">Search...</label><input name="searchword" id="mod-search-searchword" maxlength="20" class="inputbox" type="text" size="20" value="Search..." onblur="if (this.value==&#39;&#39;) this.value=&#39;Search...&#39;;" onfocus="if (this.value==&#39;Search...&#39;) this.value=&#39;&#39;;">	<input type="hidden" name="task" value="search">
+	<input type="hidden" name="option" value="com_search">
+	<input type="hidden" name="Itemid" value="471">
+	</div>
+</form>
+
+				</div>
+				<!-- end line -->
+	                                                        
+                				                                        <img class="logo_header" src="./Dissecting the Java Virtual Machine_files/martin_toshev_logo.gif" alt="Martin Toshev">
+                                                                                
+                                <div class="logoheader">
+                                        <h1 id="logo">
+
+                                                                                <span class="header1">
+                                        Algorithms, software architectures and more ...                                        </span></h1>
+                                </div><!-- end logoheader -->
+                                        <ul class="skiplinks">
+                                                <li><a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine#main" class="u2">Skip to content</a></li>
+                                                <li><a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine#nav" class="u2">Jump to main navigation and login</a></li>
+                                                                                    </ul>
+                                        <h2 class="unseen">Nav view search</h2>
+                                        <h3 class="unseen">Navigation</h3>
+                                        
+
+                        </div>
+			<!-- end header -->
+			<div id="contentarea">
+				<div id="breadcrumbs">
+
+					
+<div class="breadcrumbs">
+<a href="https://martin-toshev.com/" class="pathway">Home</a> <img src="./Dissecting the Java Virtual Machine_files/arrow.png" alt=""> <a href="https://martin-toshev.com/index.php/software-engineering" class="pathway">Software engineering</a> <img src="./Dissecting the Java Virtual Machine_files/arrow.png" alt=""> <a href="https://martin-toshev.com/index.php/software-engineering/architectures" class="pathway">Architectures</a> <img src="./Dissecting the Java Virtual Machine_files/arrow.png" alt=""> <span>Dissecting the Java Virtual Machine</span></div>
+
+
+				</div>
+				
+				
+				
+				
+
+                                        
+
+                                                        <div class="left1 leftbigger" id="nav" role="navigation">
+                                                   <div class="moduletable_menu">
+ 
+<ul class="menu">
+<li class="item-435"><a href="https://martin-toshev.com/">Home</a></li><li class="item-468 active deeper parent"><a href="https://martin-toshev.com/index.php/software-engineering">Software engineering</a><ul><li class="item-469"><a href="https://martin-toshev.com/index.php/software-engineering/algorithms">Algorithms</a></li><li class="item-470"><a href="https://martin-toshev.com/index.php/software-engineering/data-structures">Data Structures</a></li><li class="item-471 current active"><a href="https://martin-toshev.com/index.php/software-engineering/architectures">Architectures</a></li><li class="item-472"><a href="https://martin-toshev.com/index.php/software-engineering/tools">Tools</a></li><li class="item-473"><a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks">Tips &amp; Tricks</a></li></ul></li><li class="item-482"><a href="https://martin-toshev.com/index.php/conferences-java-javascript">Tech events</a></li><li class="item-485"><a href="https://martin-toshev.com/index.php/techtalks">Tech talks</a></li><li class="item-484"><a href="https://martin-toshev.com/index.php/trainings">Trainings</a></li><li class="item-483"><a href="https://martin-toshev.com/index.php/software-java-javascript-books">Books</a></li><li class="item-474"><a href="https://martin-toshev.com/index.php/about-me">About me</a></li></ul>
+</div>
+
+                                                                
+                                                                
+
+
+                                                        </div><!-- end navi -->
+               
+                                        <div id="wrapper2">
+
+                                                <div id="main" role="main">
+
+                                                
+                                                        
+<div id="system-message-container">
+</div>
+                                                        <div class="item-page">
+
+	<h2>
+			<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine">
+		Dissecting the Java Virtual Machine</a>
+		</h2>
+
+	<ul class="actions">
+						<li class="print-icon">
+			<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?tmpl=component&amp;print=1&amp;page=" title="Print" onclick="window.open(this.href,&#39;win2&#39;,&#39;status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no&#39;); return false;" rel="nofollow"><img src="./Dissecting the Java Virtual Machine_files/printButton.png" alt="Print"></a>			</li>
+		
+		
+		
+	
+	</ul>
+
+
+
+
+	<dl class="article-info">
+	<dt class="article-info-term">Details</dt>
+	<dd class="published">
+	Published on Sunday, 29 December 2013 13:52	</dd>
+	</dl>
+
+	<div id="article-index"><ul>
+		<li>
+
+			<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;limitstart=" class="toclink">Dissecting the Java Virtual Machine</a>
+
+		</li>
+		
+				<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;start=1" class="toclink">Architecture - part 1</a>
+
+				</li>
+				
+				<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;start=2" class="toclink">Architecture - part 2</a>
+
+				</li>
+				
+				<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;start=3" class="toclink">Architecture - part 3</a>
+
+				</li>
+				
+				<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;start=4" class="toclink">Architecture - part 4</a>
+
+				</li>
+				
+				<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;start=5" class="toclink">Debugging Hotspot</a>
+
+				</li>
+				
+				<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=&amp;start=6" class="toclink">Final notes and references</a>
+
+				</li>
+				
+			<li>
+
+					<a href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine?showall=1&amp;limitstart=" class="toclink active"> All Pages</a>
+
+			</li>
+			</ul></div>
+
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;">&nbsp; &nbsp;The Hotspot JVM is a pretty complex piece of software and this detailed article aims to provide a good starting point and lower the barrier for developers willing to contribute to Hotspot (and related) projects or even build their own cutomized Java virtual machine from the Hotspot codebase. It is the result of digging through a number of resources over the internet, the Java Virtual Machine Specification (7th edition), a number of research document written on the JVM and a decent amount of digging through and experimenting with the codebase. Content is simplified as much as possible. In order to be able to try out the tips in this guide you should have a development environment for the Hotspot JVM - see <a href="https://martin-toshev.com/index.php/software-engineering/tips-and-tricks/79-building-openjdk-under-ubuntu-and-window-7-8">this article</a> for details on how to do it.</p>
+<p style="text-align: left;">&nbsp; &nbsp;The source code is all there! One of the great aspects of open source software. You just have to understand how to deal with it :- )) First we will provide an overview of the architecture and data structures used by the Hotspot JVM, then we will provide an overview of how such a stack-based approach works in terms of Hotspot, give an&nbsp;overview of the Hotpost codebase and how it maps to the concrete components and at the end we will give guidelines on how to debug the Hotspot JVM.&nbsp;</p>
+<p style="text-align: left;">&nbsp; &nbsp;Throughout the article we will refer to &lt;OpenJDK_repo&gt; which is the local clone of the root OpenJDK repository (currently&nbsp;<a href="http://hg.openjdk.java.net/jdk8/tl">http://hg.openjdk.java.net/jdk8/tl</a>) along with its child repositories.</p>
+<p style="text-align: left;">&nbsp; &nbsp;Let's get started :- ))</p>
+<p style="text-align: left;">&nbsp;</p>
+<h2 style="text-align: left;">Virtual Machine Basics</h2>
+<p style="text-align: left;">There are basically two types of virtual machines for interpreted programming languages - stack-based (like the Hotspot JVM) and register-based (like the Dalvik JVM) that basically provides the same set of features:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- compilation of source language into VM specific bytecode;<br>&nbsp; &nbsp;- data structures to contains instructions and operands (the data the instructions process);<br>&nbsp; &nbsp;- a call stack for function call operations;<br>&nbsp; &nbsp;- an ‘Instruction Pointer’ (IP) pointing to the next instruction to execute;<br>&nbsp; &nbsp;- a virtual ‘CPU’ – the instruction dispatcher that:<br>&nbsp; &nbsp; &nbsp; - fetches the next instruction (addressed by the instruction pointer);<br>&nbsp; &nbsp; &nbsp; - decodes the operands;<br>&nbsp; &nbsp; &nbsp; - executes the instruction.</p>
+<p style="text-align: left;">&nbsp; &nbsp;The difference between the two approaches is in the mechanism used for storing and retrieving operands and their results.</p>
+<p style="text-align: left;"><i>Note: The information above is derived from a blog post by Mark Sinnathamby that provides a great comparison between stack-based and register-based virtual machines - see references at the end.</i></p>
+<p style="text-align: left;">&nbsp; &nbsp;Traditionally, most virtual machines intended for actual execution are stack-based, a trend that started with Pascal's Pmachine and continues today with Java's JVM and Microsoft's .Net environment.</p>
+<br>
+<h2 style="text-align: left;">Architecture<br><span style="font-size: 16px;"></span></h2>
+<p style="text-align: left;">&nbsp; &nbsp;Before you can start experimenting with the Hotspot source code (or any other project in the OpenJDK ecosystem) to not forget to issue the three holy-grail commands to get the latest sources and build the JRE/JDK images (example for Linux - for Windows you need to provide additional arguments to some of the commands as specified in the article for building under Windows):</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td>
+<p style="text-align: left;"><strong>./get_source.sh</strong> - get sources from the root and the child repositories<br><strong>bash configure</strong> - run configure script to configure your environment after update of sources<br><strong>make images</strong> - perform an incremental build of the JRE/JDK images using the latest changes in the sources&nbsp;(or "<strong>make clean images</strong>" to perform a full build)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;"><i>Note: You can use JDK8 build instructions for more options during build - see references.</i></p>
+<p style="text-align: left;">&nbsp; &nbsp;The following diagram describes the high level architecture of a typical Java Virtual Machine implementation (image provided by the JVM architecture article on artima.com - see references):</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/hotspot_architecture.gif" width="628" height="471" alt="hotspot architecture" style="display: block; margin-left: auto; margin-right: auto;">&nbsp; &nbsp; &nbsp;</p>
+<p style="text-align: left;">&nbsp; &nbsp;Before we see how a Java application is executed and how it makes use of the memory structures of the JVM the JVM must be started and initialized. If you don't have the source code and you just want to understand the overall architecture without bothering to look into the sources you can just skip this section (and continue from the next section in this article) - but you are not encouraged to do so.</p>
+<p style="text-align: left;">&nbsp; &nbsp;So it all starts with the &lt;OpenJDK_root&gt;/dev/jdk8_tl/jdk/src/share/bin/main.c file (the java/javaw launcher).</p>
+<p style="text-align: left;"><i>Note: don't get confused that this is in the 'jdk' project - you can think of the 'jdk' as a superset of the 'jre' - the JRE image is created from source code in the 'jdk' project - in case you are wondering what exactly enters the JDK and JRE images you can inspect the following build chain: &lt;OpenJDK_root&gt;/Makefile -&gt; &lt;OpenJDK_root&gt;/make/Main.gmk -&gt; &lt;OpenJDK_root&gt;/jdk/make/BuildJdk.gmk -&gt; &lt;OpenJDK_root&gt;/jdk/make/Images.gmk - the Images.gmk file provides the logic for building the JDK/JRE images from the build output)</i></p>
+<p style="text-align: left;">&nbsp; &nbsp;The first thing you will notice is that some of the methods called in the various sections (such as JLI_CmdToArgs() which is used to parse command line arguments in windows and is defined in &lt;OpenJDK_root&gt;/jdk/src/windows/bin/cmdtoargs.c) are scattered throughout different files - the reason is because logic specific for building the JDK on a particular platform might be different and the specific details are extracted to different source files that are included at build time - in that matter compilation output varies from platform to platform and output units for one platform do not pollute the build output for another platform.</p>
+<p style="text-align: left;">&nbsp; &nbsp;So the main.c file calls the JLI_Launch() method defined in &lt;OpenJDK_root&gt;/dev/jdk8_tl/jdk/src/share/bin/java.c with a number of parameters. In the implementation of JLI_Launch() you can see that some of methods are not defined in the same file - the reason is again because they might be specific for the target platform and are determined at build time. To see a particular implementation of a method look at the particular java_md*.c file (e.g. java_md_solinux.c for Solaris/Linux) - I guess 'md' stays for 'machine dependent'. The invocation of CreateExecutionEnvironment() performs preparation of the execution environment (e.g. checks whether the JVM library path is valid) and then the LoadJavaVM() method is called to load the JVM library (e.g. jvm.dll for Windows or libjvm.so for Linux) and assign the addresses of library methods to a handle (of type InvocationFunctions) that is used later to create a new JVM instance (by invoking the JNI_CreateJavaVM method). The JVMInit() method is called that performs the actual creation of a separate native thread (other than the one used to invoke the Java program) - it calls the ContinueInNewThread() method that delegates the creation of the particular VM thread to ContinueInNewThread0() method (again - specific for the target platform).</p>
+<p style="text-align: left;">&nbsp; &nbsp;When the JavaMain() method is called in a separate thread it calls the JNI_CreateJavaVM() method from the JVM library using the InitializeJVM() method. The JNI_CreateJavaVM() method is defined in &lt;OpenJDK_root&gt;/hotspot/src/share/vm/prims/jni.cpp. The first thing the JNI_CreateJavaVM() method does is to use an atomic lock (provided by an inline assembly call for the specific platform with Atomic::xchg that uses a variant of the 'xchg' instruction on the particular platform) for locking the process that tries to create an instance of the VM - this is done in order to ensure that only one JVM instance is created per process - multiple JVM instances are not allowed per process because the JVM uses global variables. To create the VM instance the JNI_CreateJavaVM() calls the create_vm() method defined in &lt;OpenJDK_root&gt;/hotspot/src/share/vm/runtime/thread.cpp that is about 400 lines of code and performs a number of activities - some of the most important are the initializations of the memory structures as specified in the architecture diagram above. Here is what happens:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the output stream module is initialized - it provides utilities from dumping formatted output to the tty (terminal) - this includes standard output of the JVM, GC log and others (depending on the particular options provided to the JVM);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the java launcher properties are processed (such as '-server' or '-client' that specify the type of the JVM - client JVM provides&nbsp;faster start-up type and less runtime optimizations beforehand while the server JVM has slower start-up time and provides more optimization beforehand - it is more suited for server applications);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- operating system specific settings are initialized;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- default system properties are initialized;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- command line arguments are parsed and aditional OS-specific initializations are performed based on the arguments;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- TLS (thread local storage) is initialized. Each JVM thread has its own storage space that can be addressed from a so called TLS index that points to the TLS. Each thread has its own TLS index that can be used by other threads if they need to access thread-local data of another thread;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- agent libraries (provided by the '-agentlib', '-agentpath' and '-Xrun' options) are launched. One notorius example of such a library agent is jdb debugging library&nbsp;that can be attached to a JVM instance and used by remote debugging clients. In short - agent libraries provide instrumentation capabilities for the applications. For more information on Java agents you can read the 'Introduction to Java Agents' article on JavaBeat - see references at the end or check out the JADE (Java Agent Development Framework) project;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- global data structures are initialized by calling vm_init_globals() - basic type checking is provided (useful when porting to a JVM to a different platform that has specifics regarding the sizes of basic types - they must be adjusted accordingly to the Java type system), heap object sizes are initialized, event log, OS synchronization primitives, perfMemory (performance memory) and chunkPool (memory allocator);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the Java version of the main thread (instance of JavaThread) is created and attached to the OS thread. If you open the implementation of JavaThread you will see that it has an 'oop' field that points the a Java Thread instance in the heap (in terms of Hotspot an 'oop' is just an object pointer that points to a Java object on the heap from C++ code). At this point we can create Java threads;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the Java-Level synchronization subsystem is initialized by calling ObjectMonitor::Initialize();</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the other global subsystems and structures are initialized - various counters for the JMX management subsystem (embedded JMX server with default MBeans for managing and monitoring the JVM), for the runtime, thread and classloading systems are initialized, the bytecode template maps are initialized (the interpreters uses these template mappings to match against the currently executing bytecode), the libzip library is loaded so that it can be used to load JAR (esentially ZIP) files, the bootstrap classpath entries are loaded (such as the ones from rt.jar), the code cache is initialized - it is used to store the output from JIT (Just-In-Time) compilation (in short JIT compilation is an optimization technique that compiles methods or loop blocks to native code at runtime to speed up the execution of the target method/loop - but more on that later), the Universe is initialized (basically - memory for heap, the method area and other metadata),&nbsp;the interpreter is initialized (along with the template table for bytecodes), the method counter is initialized (used to support JIT compilation - method invocation counts can be used to determine "hot spots" or regularly called methods);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- various system classes are loaded (such as java.lang.String, java.lang.System, java.lang.Thread, java.lang.ThreadGroup, java.lang.reflect.Method, java.lang.ref.Finalizer, java.lang.Class, and the rest of the System classes);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the signal dispatcher is initialized (used to propagate OS-level events to appropriate event handlers in the JVM);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the JIT compilers are initialized (client/server/shark - the shark JIT compiler uses the LLVM compiler infrastructure to JIT compile Java methods without introducing system-specific code; it is used along with the 'Zero' interpreter-only port of Hotspot);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the JMX server agent is created and started;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- system classes that make use of the new 'invokedynamic' instructions (such as java.lang.invoke.MethodHandle) are initialized;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- biased locking is initialized (this is an optimization technique for synchronization that allows a thread to become "biased" towards an object <br>thus eliminating the overhead in releasing/reacquiring the lock each time the same thread tries to lock/unlock the object - this is useful in case there is no&nbsp;regular lock switching between threads).</p>
+<p style="text-align: left;">&nbsp; &nbsp;Throughout the whole process of starting the JVM various JVMTI (Java Virtual Machine Tooling Interface) events are triggered to notify listener tools <br>for events related to the state of the JVM.</p>
+<p style="text-align: left;">&nbsp; &nbsp;Now that the JVM is initialized along with the memory structures we can invoke the Main class of our application where the lifecycle of our application starts. This is happening when the invocation of JNI_CreateJavaVM() returns and execution continues in the JavaMain() method from &lt;OpenJDK_root&gt;/jdk/src/share/bin/java.c. The loading of the Main class (either <span style="text-align: left;">provided</span>&nbsp;directly or from a jar file) is performed by the LoadMainClass() method which loads the sun.launcher.LauncherHelper class and calls the static checkAndLoadMain() method that loads the Main class of the application using the system classloader. The static main() method is called from the Main class.<br>At the end the main application thread is detached so that it appear's to the user that the program finishes execution when the main() method finishes. However this is the point where uncaught exceptions are handled by the launcher. At the end the launcher passes control back to the JVM by calling jni_DestroyJavaVM() from &lt;OpenJDK_root&gt;/hotspot/src/share/vm/prims/jni.cpp.&nbsp;You may have noticed that the source structure of the JVM is very self-descriptive:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/hotspot_directory_structure.gif" width="650" height="440" alt="hotspot directory structure"></p>
+<p style="text-align: left;"><br><i>Note: The share/vm/adlc directory provides an architectural language description compiler that compiles an ADL language used to describe&nbsp;the architecture of a processor. The compiler compiles an ADL file into code which is incorporated into the&nbsp;Optimizing Just In Time Compiler (OJIT) to generate efficient and correct code&nbsp;for the target architecture. The ADL describes three basic different types&nbsp;of architectural features: the instruction set (and associated&nbsp;</i><i>operands) of the target architecture, the register set of the&nbsp;target architecture along with relevant information for the register allocator and the architecture's pipeline for scheduling purposes.&nbsp;The architecture description file along with some additional target specific oracles, written in C++, represent the principal effort in porting the OJIT to a new target architecture.</i><br><i>Note: Native methods (output from JIT compilation) are also called 'nmethods' in terms of the JVM.</i></p>
+<br>
+<p style="text-align: left;">&nbsp; &nbsp;Lets get back to the basic archictural diagram and see what happens in little more detail:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/hotspot_architecture_diagram_1.png" width="628" height="446" alt="hotspot architecture diagram 1" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;Class files are loaded from a particular resource - the file system, JAR archives, over the network etc. For that reason the class loader subsystem is being used. As most you already know there are three standard <br>classloaders used by the JVM:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the bootstrap classloader that loads the core Java libraries located in the &lt;JAVA_HOME&gt;/jre/lib. It is implemented in&nbsp;&lt;OpenJDK_root&gt;/jdk/src/share/native/java/lang/ClassLoader.c;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the extensions class loader that loads classes from the JVM extension directories (&lt;JAVA_HOME&gt;/jre/lib/ext or any other directory specified by the java.ext.dirs system property). It is implemented in &lt;OpenJDK_root&gt;/jdk/src/share/classes/sun/misc/Launcher.java <br>(sun.misc.Launcher$ExtClassLoader);</p>
+<p style="text-align: left;">&nbsp; &nbsp;- the system class loader that loads code found on java.class.path, which maps to the CLASSPATH environment variable. It is implemented in &lt;OpenJDK_root&gt;/jdk/src/share/classes/sun/misc/Launcher.java (sun.misc.Launcher$AppClassLoader)</p>
+<p style="text-align: left;">&nbsp; &nbsp;The structure of a class file is desribed by the following diagram:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/classfile_structure.gif" width="583" height="317" alt="classfile structure" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;The fields are:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>magic</strong> -&nbsp;The magic item supplies the magic number identifying the class file format; it has the value 0xCAFEBABE;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>minor_version</strong>, <strong>major_version - </strong>the values of the minor_version and major_version items are the minor and&nbsp;major version numbers of this class file;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>constant_pool_count</strong> - the value of the constant_pool_count item is equal to the number of entries&nbsp;in the constant_pool table plus one;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>constant_pool[] - </strong>the constant_pool is a table of structures representing various string&nbsp;constants, class and interface names, field names, and other constants that are&nbsp;referred to within the ClassFile structure and its substructures.access_flags. The value of the access_flags item is a mask of flags used to denote access permissions to and properties of this class or interface;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>this_class -&nbsp;</strong>The value of the this_class item must be a valid index into the<br>constant_pool table;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>super_class</strong> - for a class, the value of the super_class item either must be zero or&nbsp;must be a valid index into the constant_pool table;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>interfaces_count</strong> - the value of the interfaces_count item gives the number of direct&nbsp;superinterfaces of this class or interface type;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>interfaces[]</strong> - each value in the interfaces array must be a valid index into<br>the constant_pool table;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>fields_count </strong>- the value of the fields_count item gives the number of field_info&nbsp;structures in the fields table. The field_info structures represent all<br>fields, both class variables and instance variables, declared by this class or<br>interface type;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>fields[]</strong> - each value in the fields table must be a field_info structure giving<br>a complete description of a field in this class or interface;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>methods_count</strong> - the value of the methods_count item gives the number of method_info&nbsp;structures in the methods table;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>methods[]</strong> - each value in the methods table must be a method_info structure giving&nbsp;a complete description of a method in this class or interface;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>attributes_count</strong> - the value of the attributes_count item gives the number of attributes in the attributes table of this class;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- <strong>attributes[]</strong> - each value of the attributes table must be an attribute_info&nbsp;structure.</p>
+<p style="text-align: left;">So during classloading we have three separate phases:<br>&nbsp; &nbsp;- loading: finding and importing the binary data for a type;<br>&nbsp; &nbsp;- linking: performing verification, preparation, and (optionally) resolution;<br>&nbsp; &nbsp;- verification: ensuring the correctness of the imported type; there are three subphases of of the verification phase;<br>&nbsp; &nbsp; &nbsp; - preparation: memory for class variables is allocated and initialized to default values;<br>&nbsp; &nbsp; &nbsp; - resolution: transforming symbolic references from the type into direct references;<br>&nbsp; &nbsp; &nbsp; - initialization: Java code is invoked that initializes class variables to their proper starting values.</p>
+<p style="text-align: left;">&nbsp; &nbsp;During classloading you should differentiate between class format checking (that checks for the validity of the class file structure during the loading phase) and the bytecode verification phase - that verifies that the bytecode does not have important violations (such as uninitialized variables, method calls that do not match the type of object references, violations of rules regarding data access rules, local variable access violations or stack overflow).&nbsp;</p>
+<br>
+<p style="text-align: left;">&nbsp; &nbsp;Of course classloading and program execution make use of the JVM data structures as noted in the following diagram:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/hotspot_architecture_diagram_2.png" width="628" height="445" alt="hotspot architecture diagram 2" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;The Java Virtual Machine defines various run-time data areas that are used during&nbsp;execution of a program. Some of these data areas are created on Java Virtual&nbsp;Machine start-up and are destroyed only when the Java Virtual Machine exits as we already saw in the short code walk-through at the beginning of the article.<br>&nbsp; &nbsp;Other data areas are per thread. Per-thread data areas are created when a thread is created and destroyed when the thread exits. The following diagram provides an overview of these data structures:</p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/thread_diagram.png" width="300" height="396" alt="thread diagram" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;Each Java Virtual Machine thread has its own pc (program counter) register.&nbsp;At any point, each Java Virtual Machine thread is executing the code of a single&nbsp;method, namely the current method for that thread. If that method is not&nbsp;native, the pc register contains the address of the Java Virtual Machine instruction&nbsp;currently being executed. If the method currently being executed by the thread is&nbsp;native, the value of the Java Virtual Machine's pc register is undefined. The Java&nbsp;Virtual Machine's pc register is wide enough to hold a return address or a native&nbsp;pointer on the specific platform. Each thread also has its own stack used to store stack frames for the currently executing method - once new method is entered new stack frame is pushed on the stack and once a method returns - a stack frame is popped. The following diagram provides an overview of a stack frame:</p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/stack_frame.png" width="400" height="103" alt="stack frame" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">Each frame contains:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- local variables array;<br>&nbsp; &nbsp;- return value;<br>&nbsp; &nbsp;- operand stack;<br>&nbsp; &nbsp;- reference to runtime constant pool for class of the current method.</p>
+<p style="text-align: left;">&nbsp; &nbsp;As the the JVM is a stack-based JVM the operand stack is used to provide the stack for holding bytecode instruction operands. Here is a simple example:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/bytecode_sample.png" width="500" height="215" alt="bytecode sample" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;The class data for the loaded Java class is stored in the following structure:</p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/class_data.png" width="300" height="306" alt="class data" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;It contains a runtime constant pool that holds constants (or when resolved later some of them become references) to various parts of the class and <br>the bytecode for the methods of the class (the method code).</p>
+<p style="text-align: left;">&nbsp; &nbsp;This class data items are stored in a non-heap memory (also called PermGen or permanent generation) along with the code cache (for storing machine code from JIT-compiled source code) and the string pool (pool of Java strings) as shown in the following diagram:</p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/non_heap_memory.png" width="300" height="306" alt="non heap memory" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;The heap is used to allocate class instances and arrays at runtime. Arrays and objects can never be stored on the stack because a frame is not designed to change in size after it has been created. The frame only stores references that point to objects or arrays on the heap. Unlike primitive variables and references in the local variable array (in each frame) objects are always stored on the heap so they are not removed when a method ends. Instead objects are only removed by the garbage collector.&nbsp;To support garbage collection the heap is divided into generations:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- young generation - often split between Eden and Survivor spaces - stores short living objects;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- old Generation&nbsp;(also called Tenured Generation) - stores longer living objects.</p>
+<p style="text-align: left;">&nbsp; &nbsp;The reason why generational garbage collection is very efficient is because typically most Java objects are short lived (e.g. allocated and used only in a particular method) and this allows garbage collection to clean them quickly. Longer living object are more difficult to clean up and for them safepointing is required - safepointing is a mechanism in the JVM that stops executing threads until an operation occurs (such as garbage collection in this case). Such operations (also called "Stop-The-World" or STW) are typically slow.&nbsp;Safepointing works by polling - VM thread poisons/un-poisons polling page and threads "poll" at particular stages in order to check whether a safepoint is triggered. At a safepoint threads cannot modify the Java heap or stack. Other reasons for using safepoints are deoptimization (returning a JIT-compiled bytecode to normal bytecode in case the JVM desides at some point that the JIT-compiled code does not provide optimization at all or when a new class&nbsp;is introduced in the class hierarchy of the class of the JIT-compiled bytecode), Java thread suspension, JVM Tool Interface operations (e.g. heap dumps).<br>Each thread has its own thread allocation buffer (TLAB) that stores objects allocated by the thread and in this regards we have different strategies for garbage collection of objects from the heap spaces are:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- serial - performed by a single thread sequentially over all application threads;<br> &nbsp; - concurrent - performed while applications threads are executing (without safepointing);<br> &nbsp; - parallel - performed in parallel over all application threads.</p>
+<p style="text-align: left;">&nbsp; &nbsp;In this manner we can have combinations for a garbage collector (such as concurrent only, parallel only or both concurrent and parallel).&nbsp;Inside the heap objects have the following structure:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/heap_memory_data.png" width="500" height="246" alt="heap memory data" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p style="text-align: left;">&nbsp; &nbsp;The field "klass" (a term for the internal of a Java class in JVM) refers to a pointer to the metadata of the object’s class.&nbsp;The field "vtable" is a virtual dispatch table with the methods of the class instances.&nbsp;The "mark word" is the object's header that contains the following fields:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- identity hash code;<br>&nbsp; &nbsp;- age of the object;<br>&nbsp; &nbsp;- lock record address (lock records track objects locked by currently executing methods);<br>&nbsp; &nbsp;- monitor address (address of the object's wait queue);<br>&nbsp; &nbsp;- state (unlocked, light-weight locked, heavy-weight locked, marked for GC);<br>&nbsp; &nbsp;- biased / biasable (includes other fields such as thread ID).</p>
+<br>
+<p style="text-align: left;">&nbsp; The last of stage is the actual execution of the loaded Main class starting from the static main() method. This is performed by the execution engine as outlined in the following diagram:</p>
+<p style="text-align: left;"><img src="./Dissecting the Java Virtual Machine_files/hotspot_architecture_diagram_3.png" width="628" height="445" alt="hotspot architecture diagram 3" style="display: block; margin-left: auto; margin-right: auto;">&nbsp; &nbsp;Ignoring exceptions, the inner loop of a Java Virtual Machine interpreter is effectively:</p>
+<p style="text-align: center;">
+</p><table>
+<tbody>
+<tr>
+<td><span style="text-align: left;">do {</span><br style="text-align: left;"><span style="text-align: left;">&nbsp; &nbsp; // atomically calculate pc and fetch opcode at pc;</span><br style="text-align: left;"><span style="text-align: left;">&nbsp; &nbsp; if (operands) fetch operands;</span><br style="text-align: left;"><span style="text-align: left;">&nbsp; &nbsp; // execute the action for the opcode;</span><br style="text-align: left;"><span style="text-align: left;">} while (&lt;there_is_more_to_do&gt;);</span></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;However we can have different execution techniques:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- interpreting - standard bytecode execution - bytecode instructions are mapped to assembly code that is executed;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- just-in-time (JIT) compilation - compiles bytecode of methods/loops to native code - methods/loops that are to be JIT-compiled are determined either statically or dynamically during program execution;</p>
+<p style="text-align: left;">&nbsp; &nbsp;- adaptive optimization (determines "hot spots" by monitoring execution) - can trigger JIT compilation dynamically during program execution.</p>
+<p style="text-align: left;">&nbsp; &nbsp;Additionally JIT compiled methods can be "deoptimized" as described earlier. To support this a mechanism called "On-Stack Replacement" is triggered that&nbsp;can be used to transfer control back and forth between bytecode and native code execution. JIT compilation is triggered asynchronously by counter overflow for a method/loop (interpreted counts method entries and loopback branches). It also produces relocation info (transferred on next method entry) apart from generated code. In case JIT-compiled code calls not-yet-JIT-compiled code control is transferred to the interpreter.&nbsp;The nmethods (remember? the structure that contains the machine code for JIT-compiled method/loop) produced by the JIT compiler contain also per-safepoint oopmaps (called "GC maps" if considering GC-related safepoints) that contain description of the locations (in registers or on stack) of object pointers (native machine addresses) that point to the safepoint.</p>
+<p style="text-align: left;">&nbsp; &nbsp;Here is how JIT compilation works in general:</p>
+<p style="text-align: left;">&nbsp; &nbsp;1) bytecode is turned into a graph;<br>&nbsp; &nbsp;2) the graph is turned into a linear sequence of operations that manipulate an infinite loop of virtual registers (each node places its result in a virtual register);<br>&nbsp; &nbsp;3) physical registers are allocated for virtual registers (the program stack might be used in case virtual registers exceed physical registers) - e.g. the C1 client JIT compiler uses the Chaitin-Briggs graph-coloring algorithm to achieve correct mapping between virtual and physical registers;<br>&nbsp; &nbsp;4) code for each operation is generated using its allocated registers.</p>
+<p style="text-align: left;">&nbsp; &nbsp;An important point is that in many programming languages, the programmer has the illusion of allocating arbitrarily many variables. However, during compilation, the compiler must decide how to allocate these variables to a small, finite set of registers.In compiler optimization, register allocation is the process of assigning a large number of target program variables onto a small number of CPU registers. Register allocation can happen over a basic block (local register allocation), over a whole function/procedure (global register allocation), or across function boundaries traversed via call-graph (interprocedural register allocation). When done per function/procedure the calling convention may require insertion of save/restore around each call-site.&nbsp;The compiler can construct a graph such that every vertex represents a unique variable in the program. Interference edges connect pairs of vertices which are live at the same time, and preference edges connect pairs of vertices which are involved in move instructions. Register allocation can then be reduced to the problem of K-coloring the resulting graph, where K is the number of registers available on the target architecture.&nbsp;No two vertices sharing an interference edge may be assigned the same color, and vertices sharing a preference edge should be assigned the same color if possible. Some of the vertices may be precolored to begin with, representing variables which must be kept in certain registers due to calling conventions or communication between modules. As graph coloring in general is NP-complete, so is register allocation.</p>
+<br>
+<h2 style="text-align: left;">Debugging Hotspot</h2>
+<p style="text-align: left;">This section only scratches the surface by providing insights on how to debug the Hotspot codebase. Here are several techniques:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- using JVM flags to dump debugging information;<br>&nbsp; &nbsp;- using various existing tools (or writing your own depending on what you want to debug) - the existing tools are in the &lt;OpenJDK_root&gt;/hotspot/src/share/tools directory;<br>&nbsp; &nbsp;- debugging a sample Java application (with jdb) that encompasses the JVM feature you want to debug - inspecting the application behaviour will allow to debug the targeted JVM feature itself;<br>&nbsp; &nbsp;- using the JVMTI and other seviceability utilities - for inspecting JVM behaviour;<br>&nbsp; &nbsp;- building a debug version of the JVM that will unlock additional JVM flags (see "HotSpot Internals: Explore and Debug the VM at the OS Level" in the references);<br>&nbsp; &nbsp;- dumping debug information on the standard output - of course, dummiest but iron-proof method :- ))).</p>
+<h3 style="text-align: left;">Using JVM flags</h3>
+<p style="text-align: left;">&nbsp; &nbsp;To build a debug version of the JVM you may use a separate Hotspot target (the latest JDK image must be already build unless you use an official build from Oracle - it is used for bootstrapping the debug build). This is is an example using 64 bit Windows (with 64 bit Cygwin):</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">ALT_BOOTDIR=/cygdrive/d/projects/OpenJDK/dev/jdk8_tl/build/windows-x86_64-normal-server-release/jdk LP64=1 STRIP_POLICY=no_strip make debug</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;You should make sure that the proper Visual Studio variables are also provided on the PATH if you are building under Windows. For example (change paths accordingly on your Windows system):</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">export PATH="/cygdrive/d/software/Microsoft Visual Studio 10.0/VC/bin/amd64":$PATH</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;Also make sure that the LIB and INCLUDE varibles are set properly (look into the vcvars.exe/vcvars64.exe from the Visual Studio directories on how to set them properly).&nbsp;For example (change paths accordingly on your Windows system):</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">export LIB=D:\software\Microsoft Visual Studio 10.0\VC\LIB\amd64;D:\software\Microsoft Visual Studio 10.0\VC\ATLMFC\LIB\amd64;C:\Program Files (x86)\Microsoft SDKs\Windows \v7.0A\lib\x64;C:\Program Files\SQLXML 4.0\bin;</span></code><code><span style="text-align: left;"><br>export INCLUDE=D:\software\Microsoft Visual Studio 10.0\VC\INCLUDE;D:\software\Microsoft Visual Studio 10.0\VC\ATLMFC\INCLUDE;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\include;</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;Finally issue the following to copy the debug JVM (provided as library) on top of the existing Hotspot JVM library (again change paths accordingly - for Linux the JVM library is in the libjvm.so file):</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><code><span style="text-align: left;">cd &lt;OpenJDK_root&gt;<br></span></code>cp hotspot/build/windows/windows_amd64_compiler2/debug/jvm.dll build/windows-x86_64-normal-server-release/jdk/bin/server/jvm.dll</code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;To verify that the debug build is working check the version of the JVM using &nbsp;the Java launcher:</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">cd build/windows-x86_64-normal-server-release/jdk/bin/</span></code><code><span style="text-align: left;">./java.exe -version</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;You should see output similar to the following:</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td>
+<p><code><span style="text-align: left;">openjdk version "1.8.0-internal"<br></span></code><code><span>OpenJDK Runtime Environment (build 1.8.0-internal-martin_2013_12_23_16_13-b00)<br></span></code><code><span>OpenJDK 64-Bit Server VM (build 25.0-b63-internal-debug, mixed mode)</span></code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;You can now see all available debug options by issuing:</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">./java.exe -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -Xprintflags</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;or</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">./java.exe -XX:+UnlockDiagnosticVMOptions -XX:+UnlockExperimentalVMOptions -XX:+PrintFlagsWithComments</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;The -XX:+UnlockDiagnosticVMOptions option enables VM diagnostic options.<br><i>Note: you may need some time to understand some of the options based on your particular use case.</i></p>
+<p style="text-align: left;">&nbsp; &nbsp;Examples (some of the options work only when -XX:+UnlockDiagnosticVMOptions is specified):</p>
+<p style="text-align: left;">./java.exe -XX:+CountBytecodes &lt;program&gt; - prints the number of bytecodes executed by the JVM<br>./java.exe -XX:+PrintBytecodeHistogram &lt;program&gt; - prints statistics on the number of bytecode instructions executed for each type of instruction<br>./java.exe -XX:+LogCompilation &lt;program&gt; - can emit a structured XML log of compilation-related activity during a run of the JVM<br>./java.exe -XX:LogFile=/&lt;path_to_log&gt;/ &lt;program&gt; - prints logging information to a log file <br>./java.exe -XX:+TraceClassLoading &lt;program&gt; - print identities of loaded classes<br>./java.exe -XX:+TraceClassUnloading &lt;program&gt; - print identities of unloaded classes<br>./java.exe -XX:+PrintGCDetails &lt;program&gt; - tracks size of the perm gen<br>./java.exe -XX:+UseSerialGC &lt;program&gt; - Serial GC (Serial-young Serial-old) <br>./java.exe -XX:+UseParallelGC &lt;program&gt; - Parallel GC (Parallel-young Serial-old) <br>./java.exe -XX:+UseParallelOldGC &lt;program&gt; - Parallel Compacting (Parallel-young Parallel-old) <br>./java.exe -XX:+UseConcMarkSweepGC &lt;program&gt; - Concurrent Mark Sweep GC (Parallel-old CMS-old)<br>./java.exe -XX:+PrintAssembly &lt;program&gt; - print assembly code for bytecoded and native methods<br>./java.exe -XX:+PrintOptoAssembly &lt;program&gt; - (C2 only)<br>./java.exe -XX:+PrintNMethods &lt;program&gt; - print nmethods as they are generated<br>./java.exe -XX:+PrintNativeNMethods &lt;program&gt; - print native method wrappers as they are generated<br>./java.exe -XX:+PrintSignatureHandlers &lt;program&gt; - print native method signature handlers<br>./java.exe -XX:+PrintAdapterHandlers &lt;program&gt; - print adapters (i2c, c2i) as they are generated<br>./java.exe -XX:+PrintStubCode &lt;program&gt; print stubs: deopt, uncommon trap, exception, safepoint, runtime support<br>./java.exe -XX:+PrintCompilation &lt;program&gt; - lets you know if any methods are compiled by printing information about compiled methods<br>./java.exe -XX:+PrintInlining &lt;program&gt; - prints information about inlining decisions<br>./java.exe -XX:CompileCommand=... - controls compilation policy</p>
+<p style="text-align: left;">&nbsp; &nbsp;You can print assembly code for each bytecode instruction generated by the template interpreter (decribed earlier in the article) by using the -XX:+PrintInterpreter option - however you will need to install a disassembler plug-in for the JVM (see the article on the PrintAssembly option from the <br>"Hotspot Internals" wiki - see references).</p>
+<p style="text-align: left;">&nbsp; &nbsp;For more JVM flags and command line arguments you can look into the following files:</p>
+<ul>
+<li style="text-align: left;">&lt;OpenJDK_root&gt;/hotspot/src/share/vm/runtime/globals.hpp - global options;</li>
+<li style="text-align: left;">&lt;OpenJDK_root&gt;/hotspot/src/share/vm/gc_implementation/g1/g1_globals.hpp - global options specific to the G1 (garbage-first) server garbage collector;</li>
+<li style="text-align: left;">&lt;OpenJDK_root&gt;/hotspot/src/share/vm/runtime/arguments.hpp - global arguments.</li>
+</ul>
+<h3 style="text-align: left;">Using Existing Tools</h3>
+<p style="text-align: left;"><strong>IdealGraphVisualizer tool</strong></p>
+<p style="text-align: left;">&nbsp; &nbsp;The "ideal graph" visualizer is a tool developed to help examine the IR (intermediate representation) from the C2 JIT compiler (refered as "ideal graph"). The tool is located under the &lt;OpenJDK_root&gt;/hotspot/src/share/tools/IdealGraphVisualizer directory.</p>
+<p style="text-align: left;">&nbsp; &nbsp;The JVM support is controlled by the flag -XX:PrintIdealGraphLevel=#<br>where # is:</p>
+<p style="text-align: left;">&nbsp; &nbsp;0: no output, the default<br>&nbsp; &nbsp;1: dumps graph after parsing, before matching, and final code.<br> also dumps graph for failed compiles, if available<br>&nbsp; &nbsp;2: more detail, including after loop opts<br>&nbsp; &nbsp;3: even more detail<br>&nbsp; &nbsp;4: prints graph after parsing every bytecode (very slow)</p>
+<p style="text-align: left;">&nbsp; &nbsp;By default the JVM expects that it will connect to a visualizer on the&nbsp;local host on port 4444. This can be configured using the options&nbsp;-XX:PrintIdealGraphAddress= and -XX:PrintIdealGraphPort=.&nbsp;PrintIdealGraphAddress can actually be a hostname.</p>
+<p style="text-align: left;">&nbsp; &nbsp;Alternatively the output can be sent to a file using&nbsp;-XX:PrintIdealGraphFile=&lt;filename&gt;. Each compiler thread will get it's&nbsp;own file with unique names being generated by adding a number onto the&nbsp;provided file name.</p>
+<p style="text-align: left;"><strong>LogCompilation tool</strong></p>
+<p style="text-align: left;">&nbsp; &nbsp;The log compilation tool can be used to parse the output of the -XX:+LogCompilation command switch that is used to log the output from the JIT compilation (and it is not very readable). It is located under the &nbsp;&lt;OpenJDK_root&gt;/hotspot/src/share/tool/LogCompilation directory.</p>
+<p style="text-align: left;">&nbsp; &nbsp;It's main purpose is to recreate output similar to -XX:+PrintCompilation -XX:+PrintInlining output from a debug JVM. It requires a 1.5 JDK to build and simply typing make should build it.&nbsp;It produces a jar file, logc.jar, that can be run on the hotspot.log from LogCompilation output like this:</p>
+<p style="text-align: left;">
+</p><table>
+<tbody>
+<tr>
+<td><code><span style="text-align: left;">java -jar logc.jar hotspot.log</span></code></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p style="text-align: left;">&nbsp; &nbsp;For more details see the article on the LogCompilation tool in the Hotspot internals wiki.</p>
+<p style="text-align: left;"><strong><span style="color: #000000;">hsdis tool</span></strong></p>
+<p style="text-align: left;">&nbsp; &nbsp;The hsdis tool is a dissasembler used by Hotspot for debugging purposes. For more details see: &lt;OpenJDK_root&gt;hotspot\src\share\tools\hsdis\README.txt</p>
+<p style="text-align: left;"><strong>C1visualizer</strong></p>
+<p style="text-align: left;">&nbsp; &nbsp;The C1 visualizer tool is used to visualize work of the C1 JIT client compiler. For more details read the user guide from the c1visualizer project repository (see references).</p>
+<p style="text-align: left;"><strong>jmap</strong><br><br></p>
+<p style="text-align: left;">&nbsp; &nbsp;JMAP prints shared object memory maps or heap memory details of a given process or core file or a remote debug server. You can see Oracle documentation for more details on the jmap utility.</p>
+<p style="text-align: left;"><strong>jconsole</strong></p>
+<p style="text-align: left;">&nbsp; &nbsp;You can use the JConsole JMX client to connect to the default JMX agent running in the JVM to display various statistics on the running JVM instance.<br>You may need to specify -Dcom.sun.management.jmxremote when starting the application.</p>
+<h3 style="text-align: left;">Using serviceability utilities</h3>
+<p style="text-align: left;">&nbsp; &nbsp;Yet another option for debugging the Hotspot JVM is to use serviceability utilities that allow observing JVM operations by other Java processes. Here is a list of the various utility implementations throughout the JVM codebase that you can inspect depending on your use case:</p>
+<p style="text-align: left;">The Serviceability Agent(SA):<br>&nbsp; &nbsp;hotspot/agent/<br>&nbsp; &nbsp;hotspot/src/share/vm/runtime/vmStructs.hpp<br>&nbsp; &nbsp;hotspot/src/share/vm/runtime/vmStructs.cpp<br>&nbsp; &nbsp;jvmstat performance counters:<br>&nbsp; &nbsp;hotspot/src/share/vm/prims/perf.cpp<br>&nbsp; &nbsp;hotspot/src/share/runtime/perfMemory.cpp<br>&nbsp; &nbsp;hotspot/src/share/runtime/perfData.cpp<br>&nbsp; &nbsp;hotspot/src/share/runtime/statSampler.cpp<br>&nbsp; &nbsp;hotspot/src/share/vm/services/*Service.cpp<br>&nbsp; &nbsp;hotspot/src/os/solaris/vm/perfMemory_solaris.cpp<br>&nbsp; &nbsp;hotspot/src/os/linux/vm/perfMemory_linux.cpp<br>&nbsp; &nbsp;hotspot/src/os/win32/vm/perfMemory_win32.cpp</p>
+<p style="text-align: left;">The Java Virtual Machine Tool Interface (JVMTI):<br>&nbsp; &nbsp;hotspot/src/share/vm/prims/jvmtiGen.java<br>&nbsp; &nbsp;hotspot/src/share/vm/prims/jvmtiGen.java<br>&nbsp; &nbsp;hotspot/src/share/vm/prims/jvmti.xml</p>
+<p style="text-align: left;">The Monitoring and Management interface:<br>&nbsp; &nbsp;hotspot/src/share/vm/services/</p>
+<p style="text-align: left;">Dynamic Attach:<br>&nbsp; &nbsp;hotspot/src/share/vm/services/attachListener.*<br>&nbsp; &nbsp;hotspot/src/os/linux/vm/attachListener_linux.cpp<br>&nbsp; &nbsp;hotspot/src/os/solaris/vm/attachListener_solaris.cpp<br>&nbsp; &nbsp;hotspot/src/os/win32/vm/attachListener_win32.cpp</p>
+<p style="text-align: left;">DTrace:<br>&nbsp; &nbsp;hotspot/src/os/solaris/dtrace/<br>&nbsp; &nbsp;hotspot/build/solaris/makefiles/dtrace.make&nbsp;</p>
+<p style="text-align: left;">pstack support:<br>&nbsp; &nbsp;hotspot/src/os/solaris/dtrace/</p>
+<p style="text-align: left;">&nbsp; &nbsp;You can read more about the above utilities also from the Hotspot documentation - see references.</p>
+<br>
+<h2 style="text-align: left;">Benchmarking your JVM implementation</h2>
+<p style="text-align: left;">&nbsp; &nbsp;There are a number of standard benchmarks that can be used to test the performance of your JVM implementation:</p>
+<p style="text-align: left;">&nbsp; &nbsp;- for client benchmarks you can use <a href="http://www.spec.org/jvm2008/">http://www.spec.org/jvm2008/</a><br>&nbsp; &nbsp;- for server benchmarks you can use <a href="http://www.spec.org/jbb2013/">http://www.spec.org/jbb2013/</a><br>&nbsp; &nbsp;- for numerical computations you can use <a href="http://math.nist.gov/scimark2/">http://math.nist.gov/scimark2/</a><a href="http://math.nist.gov/scimark2/"></a></p>
+<p style="text-align: left;">You can also use the Caliper (<a href="https://code.google.com/p/caliper/"></a><a href="https://code.google.com/p/caliper/">https://code.google.com/p/caliper/</a>)&nbsp;to write your own microbenchmarks for testing the performance of small bits of java code on your JVM implementation.</p>
+<h2 style="text-align: left;">Conclusion &nbsp;</h2>
+<p style="text-align: left;">&nbsp; &nbsp;I hope this article gives a decent introduction to the Hotspot codebase and can serve as a reference for understanding how the JVM works and even building your own JVM, tuning a JVM or debugging a JVM implementation. Any suggestions for improvement are more than welcome.</p>
+<h2 style="text-align: left;">References</h2>
+<p style="text-align: left;">1) The Java Virtual Machine Specification (Java SE 7 Edition)<br><a href="http://docs.oracle.com/javase/specs/jvms/se7/html/">http://docs.oracle.com/javase/specs/jvms/se7/html/</a></p>
+<p style="text-align: left;">2) The Architecture of the Java Virtual Machine<br><a href="http://www.artima.com/insidejvm/ed2/jvm2.html">http://www.artima.com/insidejvm/ed2/jvm2.html</a></p>
+<p style="text-align: left;">3) JVM Internals<br><a href="http://blog.jamesdbloom.com/JVMInternals.html">http://blog.jamesdbloom.com/JVMInternals.html</a></p>
+<p style="text-align: left;">4) Hotspot JVM tuning<br><a href="http://www.slideshare.net/giladgaron/hotspot-jvm-tuning">http://www.slideshare.net/giladgaron/hotspot-jvm-tuning</a></p>
+<p style="text-align: left;">5) Java Hotspot Virtual Machine, FOSDEM 2007<br><a href="http://openjdk.java.net/groups/hotspot/docs/FOSDEM-2007-HotSpot.pdf">http://openjdk.java.net/groups/hotspot/docs/FOSDEM-2007-HotSpot.pdf</a></p>
+<p style="text-align: left;">6) Learn about JVM internals - what does the JVM do?<br><a href="https://www.youtube.com/watch?v=UwB0OSmkOtQ&amp;list=PL1464F2747F1E66FA">http://www.youtube.com/watch?v=UwB0OSmkOtQ&amp;list=PL1464F2747F1E66FA</a></p>
+<p style="text-align: left;">7) Hotspot group docs<br><a href="http://openjdk.java.net/groups/hotspot/">http://openjdk.java.net/groups/hotspot/</a></p>
+<p style="text-align: left;">8) The Implementation of Lua 5.0<br><a href="http://www.lua.org/doc/jucs05.pdf">http://www.lua.org/doc/jucs05.pdf</a></p>
+<p style="text-align: left;">9) Mani Sarkar's collection of Hotspot links<br><a href="https://gist.github.com/neomatrix369/5743225">https://gist.github.com/neomatrix369/5743225</a></p>
+<p style="text-align: left;">10)&nbsp;Synopsis of articles &amp; videos on Performance tuning, JVM, GC in Java, Mechanical Sympathy, et al<br><a href="http://www.javaadvent.com/2013/12/part-1-of-3-synopsis-of-articles-videos.html"></a><a href="http://www.javaadvent.com/2013/12/part-1-of-3-synopsis-of-articles-videos.html">http://www.javaadvent.com/2013/12/part-1-of-3-synopsis-of-articles-videos.html</a><br><a href="http://www.javaadvent.com/2013/12/part-2-of-3-synopsis-of-articles-videos.html"></a><a href="http://www.javaadvent.com/2013/12/part-2-of-3-synopsis-of-articles-videos.html">http://www.javaadvent.com/2013/12/part-2-of-3-synopsis-of-articles-videos.html</a><br><a href="http://neomatrix369.wordpress.com/2013/12/23/part-3-of-3-synopsis-of-articles-videos-on-performance-tuning-jvm-gc-in-java-mechanical-sympathy-et-al/"></a><a href="http://neomatrix369.wordpress.com/2013/12/23/part-3-of-3-synopsis-of-articles-videos-on-performance-tuning-jvm-gc-in-java-mechanical-sympathy-et-al/"></a><a href="http://www.javaadvent.com/2013/12/part-3-of-3-synopsis-of-articles-videos.html"></a><a href="http://www.javaadvent.com/2013/12/part-3-of-3-synopsis-of-articles-videos.html">http://www.javaadvent.com/2013/12/part-3-of-3-synopsis-of-articles-videos.html</a></p>
+<p style="text-align: left;">11) Dissecting the Hotspot JVM at java2days 2013<br><a href="http://nosoftskills.com/2013/12/dissecting-the-hotspot-vm-at-java2days/">http://nosoftskills.com/2013/12/dissecting-the-hotspot-vm-at-java2days/</a></p>
+<p style="text-align: left;">12) Hacking Hotspot in Eclipse<br><a href="http://neomatrix369.wordpress.com/2013/03/12/hotspot-is-in-focus-again-aka-hacking-hotspot-in-eclipse-juno-under-ubuntu-12-04/">http://neomatrix369.wordpress.com/2013/03/12/hotspot-is-in-focus-again-aka-hacking-hotspot-in-eclipse-juno-under-ubuntu-12-04/</a></p>
+<p style="text-align: left;">13) JVM research (Sun/Oracle labs)<br><a href="http://www.ssw.uni-linz.ac.at/Research/Projects/JVM/">http://www.ssw.uni-linz.ac.at/Research/Projects/JVM/</a><br><a href="https://digitalcollections.anu.edu.au/handle/1885/9053">https://digitalcollections.anu.edu.au/handle/1885/9053</a><br><a href="https://www.cs.tcd.ie/publications/tech-reports/reports.07/TCD-CS-2007-49.pdf">https://www.cs.tcd.ie/publications/tech-reports/reports.07/TCD-CS-2007-49.pdf</a></p>
+<p style="text-align: left;">14) Stack based vs Register based Virtual Machine Architecture, and the Dalvik VM<br><a href="http://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/">http://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/</a></p>
+<p style="text-align: left;">15) Hotspot Overview<br><a href="http://www.cs.princeton.edu/picasso/mats/HotspotOverview.pdf">http://www.cs.princeton.edu/picasso/mats/HotspotOverview.pdf</a></p>
+<p style="text-align: left;">16) Hotspot Internals<br><a href="https://wikis.oracle.com/display/HotSpotInternals/Home">https://wikis.oracle.com/display/HotSpotInternals/Home</a></p>
+<p style="text-align: left;">17) JDK8 build instruction (complete rewrite of instructions for JDK7)<br><a href="http://hg.openjdk.java.net/jdk8/build/raw-file/tip/README-builds.html">http://hg.openjdk.java.net/jdk8/build/raw-file/tip/README-builds.html</a></p>
+<p style="text-align: left;">18) Design of the Java HotSpotTM Client Compiler for Java 6<br><a href="http://www.stanford.edu/class/cs343/resources/java-hotspot.pdf">http://www.stanford.edu/class/cs343/resources/java-hotspot.pdf</a></p>
+<p style="text-align: left;">19) Register allocation<br><a href="https://en.wikipedia.org/wiki/Register_allocation">http://en.wikipedia.org/wiki/Register_allocation</a></p>
+<p style="text-align: left;">20) How to JIT – an introduction (awesome post that gives insights on how is JIT-compiled executed at runtime)<br><a href="http://eli.thegreenplace.net/2013/11/05/how-to-jit-an-introduction/">http://eli.thegreenplace.net/2013/11/05/how-to-jit-an-introduction/</a></p>
+<p style="text-align: left;">21) A brief history of Just-in-Time<br><a href="http://web.csie.cgu.edu.tw/~jhchen/course/PL2/A%20brief%20history%20of%20just-in-time.pdf">http://web.csie.cgu.edu.tw/~jhchen/course/PL2/A%20brief%20history%20of%20just-in-time.pdf</a></p>
+<p style="text-align: left;">22) Runtime code generation with JVM and CLR<br><a href="http://www.cs.helsinki.fi/u/vihavain/k12/compiler_project/project/Runtime_Code_Generation_with_JVM_and_CLR.pdf">http://www.cs.helsinki.fi/u/vihavain/k12/compiler_project/project/Runtime_Code_Generation_with_JVM_and_CLR.pdf</a></p>
+<p style="text-align: left;">23) Optimizing ML with Run-Time Code Generation<br><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.43.8218&amp;rep=rep1&amp;type=pdf">http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.43.8218&amp;rep=rep1&amp;type=pdf</a></p>
+<p style="text-align: left;">24) GCC Inline Assembly HOWTO<br><a href="http://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html">http://www.ibiblio.org/gferg/ldp/GCC-Inline-Assembly-HOWTO.html</a></p>
+<p style="text-align: left;">25) Introduction to Java Agents<br><a href="http://www.javabeat.net/introduction-to-java-agents">http://www.javabeat.net/introduction-to-java-agents</a></p>
+<p style="text-align: left;">26) ZeroSharkFaq for IcedTea<br><a href="http://icedtea.classpath.org/wiki/ZeroSharkFaq">http://icedtea.classpath.org/wiki/ZeroSharkFaq</a></p>
+<p style="text-align: left;">27) CrossCompileFaq for IcedTea<br><a href="http://icedtea.classpath.org/wiki/CrossCompileFaq">http://icedtea.classpath.org/wiki/CrossCompileFaq</a></p>
+<p style="text-align: left;">28) The Java HotSpot Server Compiler, Proceedings of the Java Virtual Machine Research and Technology Symposium (JVM '01)<br><a href="https://www.usenix.org/legacy/events/jvm01/full_papers/paleczny/paleczny.pdf">https://www.usenix.org/legacy/events/jvm01/full_papers/paleczny/paleczny.pdf</a></p>
+<p style="text-align: left;">29) HotSpot Internals: Explore and Debug the VM at the OS Level<br><a href="http://openjdkpower.osuosl.org/OpenJDK/JavaOne2013_HS/javaone2013_hs.html#(1)">http://openjdkpower.osuosl.org/OpenJDK/JavaOne2013_HS/javaone2013_hs.html#(1)</a></p>
+<p style="text-align: left;">30) c1visualizer project<br><a href="https://java.net/projects/c1visualizer/">https://java.net/projects/c1visualizer/</a></p>
+<p style="text-align: left;">&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p> <div class="cmp_buttons_container" style="height:40px;"><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div><div class="cmp_like_container" style="float:left;margin:10px;"><fb:like href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine" layout="button_count" show_faces="true" send="true" width="" action="like" font="arial" colorscheme="light" class=" fb_iframe_widget" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=&amp;color_scheme=light&amp;container_width=0&amp;font=arial&amp;href=https%3A%2F%2Fmartin-toshev.com%2Findex.php%2Fsoftware-engineering%2Farchitectures%2F80-dissecting-the-java-virtual-machine&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=true&amp;show_faces=true&amp;width="><span style="vertical-align: bottom; width: 0px; height: 0px;"><iframe name="f1d97dc76b1ae4fcb" width="1000px" height="1000px" data-testid="fb:like Facebook Social Plugin" title="fb:like Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="./Dissecting the Java Virtual Machine_files/like.html" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: visible; width: 0px; height: 0px;" class=""></iframe></span></fb:like>
+</div><div class="cmp_twitter_container" style="float:left;margin:10px;"><iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="X Post Button" src="./Dissecting the Java Virtual Machine_files/tweet_button.1227a5674072e080ffb1ba14ac0c1079.en-gb.html" style="position: static; visibility: visible; width: 65px; height: 20px;" data-url="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine"></iframe>
+</div><div class="cmp_google_container" style="float:left;margin:10px;"><div id="___plusone_0" style="position: absolute; width: 450px; left: -10000px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position:absolute;top:-10000px;width:450px;margin:0px;border-style:none" tabindex="0" vspace="0" width="100%" id="I0_1786619990823" name="I0_1786619990823" src="./Dissecting the Java Virtual Machine_files/fastbutton.html" data-gapiattached="true"></iframe></div><g:plusone size="medium" href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine" data-gapiscan="true" data-onload="true" data-gapistub="true"></g:plusone>
+</div><div class="cmp_in_container" style="float:left;margin:10px;"><script type="IN/Share" data-url="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine" data-counter="right"></script>
+</div><div class="cmp_share_container" style="float:right;margin:10px;"><script>function fbs_click() {u="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine";t="Dissecting the Java Virtual Machine";var left = (screen.width/2)-328;var top = (screen.height/2)-218;window.open("//www.facebook.com/sharer.php?u=https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine&amp;t=Dissecting the Java Virtual Machine","Sharer","toolbar=0, location=0, directories=0, status=0, menubar=0, scrollbars=0, resizable=0, copyhistory=0, width=656, height=436, top="+top+", left="+left); return false;}</script><style>.cmp_shareicontextlink {   text-decoration: none; line-height: 20px;height: 20px; color: #3B5998; font-size: 11px; font-family: arial, sans-serif;  padding:2px 4px 2px 20px; border:1px solid #CAD4E7; cursor: pointer;  background:url(//static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat 1px 1px #ECEEF5; -webkit-border-radius: 3px; -moz-border-radius: 3px;} .cmp_shareicontextlink:hover {   background:url(//static.ak.facebook.com/images/share/facebook_share_icon.gif?6:26981) no-repeat 1px 1px #ECEEF5 !important;  border-color:#9dacce !important; color: #3B5998 !important;} </style><a class="cmp_shareicontextlink" href="https://www.facebook.com/share.php?u=https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine" share_url="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine" onclick="return fbs_click()" target="_blank">Share</a>
+</div></div><div id="fbcom1753834506" class="cmp_comments_container" style="border-top-style:solid;border-top-width:1px;padding:10px;text-align:center;"><fb:comments href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine" num_posts="10" width="450" colorscheme="light" class=" fb_iframe_widget fb_iframe_widget_fluid_desktop" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;color_scheme=light&amp;container_width=0&amp;height=100&amp;href=https%3A%2F%2Fmartin-toshev.com%2Findex.php%2Fsoftware-engineering%2Farchitectures%2F80-dissecting-the-java-virtual-machine&amp;locale=en_US&amp;sdk=joey&amp;skin=light&amp;width=450"><span style="vertical-align: bottom; width: 0px; height: 0px;"><iframe name="f9ed087b17ba28e18" width="450px" height="100px" data-testid="fb:comments Facebook Social Plugin" title="fb:comments Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="./Dissecting the Java Virtual Machine_files/comments.html" style="border-width: medium; border-style: none; border-color: currentcolor; border-image: none; visibility: visible; width: 0px; height: 0px;" class=""></iframe></span></fb:comments></div>
+				<ul class="pagenav">
+					<li class="pagenav-prev">
+						<a href="https://martin-toshev.com/index.php/software-engineering/architectures/83-oracle-mssql-postgre-mysql-db2" rel="prev">&lt; Prev</a>
+					</li>
+					<li class="pagenav-next">
+						<a href="https://martin-toshev.com/index.php/software-engineering/architectures/81-osgi-equinox-open-source" rel="next">Next &gt;</a>
+					</li>
+				</ul>
+	
+</div>
+
+
+                                                </div><!-- end main -->
+
+                                        </div><!-- end wrapper -->
+
+                                
+                        
+                                <div class="wrap"></div>
+
+                                </div>
+			<!-- end contentarea -->
+
+		</div>
+		<!-- back -->
+
+	</div>
+	<!-- all -->
+
+	<div id="footer-outer">
+
+
+	
+                        <div id="footer-sub">
+
+
+                                <div id="footer">
+                                        
+<div class="footer" style="text-align:;">
+Copyright&nbsp;©&nbsp;2026&nbsp;Martin Toshev</div>
+
+                                </div><!-- end footer -->
+
+                        </div>
+
+                </div>
+	
+
+
+<div id="sbox-overlay" aria-hidden="true" tabindex="-1" style="z-index: 65555; opacity: 0;"></div><div id="sbox-window" role="dialog" aria-hidden="true" class="shadow" style="z-index: 65557;"><div id="sbox-content" style="opacity: 0;"></div><a id="sbox-btn-close" href="https://martin-toshev.com/index.php/software-engineering/architectures/80-dissecting-the-java-virtual-machine#" role="button" aria-controls="sbox-window"></a></div><iframe scrolling="no" frameborder="0" allowtransparency="true" src="./Dissecting the Java Virtual Machine_files/widget_iframe.1227a5674072e080ffb1ba14ac0c1079.html" title="Twitter settings iframe" style="display: none;"></iframe><iframe name="oauth2relay236525031" id="oauth2relay236525031" src="./Dissecting the Java Virtual Machine_files/postmessageRelay.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" title="Twitter analytics iframe" src="./Dissecting the Java Virtual Machine_files/saved_resource.html"></iframe></body><rq-implicit-test-rule-widget class="rq-element" draggable="true" style="display: none;"><template shadowrootmode="closed">
+    <style>:host {
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  top: 16px;
+  right: 16px;
+}
+
+#container {
+  border-radius: 1rem;
+  padding: 12px 1rem;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-family: system-ui;
+  background: #1a1a1a;
+  box-shadow: 0px 0px 0px 4px rgba(255, 255, 255, 0.16), 0px 16px 32px 0px rgba(0, 0, 0, 0.24);
+  border: 1px solid #5c5b5b;
+  cursor: move;
+  width: 420px;
+  transition: all 0.2s;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#container.minimized {
+  width: fit-content;
+  height: 56px;
+  padding: 6px;
+  border-radius: 20px;
+}
+
+#container.minimized #test-rule-container,
+#container.minimized #heading-container,
+#container.minimized #info-container {
+  display: none;
+}
+
+#rule-name {
+  font-size: 12px;
+  margin: 4px 0;
+  font-weight: bolder;
+  line-height: 1.4;
+  max-width: 290px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+}
+
+#logo-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#heading-container div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+#actions-container {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+#actions-container button {
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: #fff;
+  transition: all 0.2s;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+#actions-container #close-button svg {
+  width: 10px;
+  height: 10px;
+}
+
+#actions-container button:hover {
+  background: #383838;
+}
+
+#explicit-widget-container {
+  background: #282828;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+#implicit-widget-container {
+  padding: 0 4px;
+  margin-top: 8px;
+}
+
+#rule-status-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#test-rule-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+#info-container {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 0px;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+#info-icon {
+  align-self: flex-start;
+  width: 16px;
+  height: 16px;
+  color: #bbb;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#info-text {
+  color: #fff;
+  font-size: 11px;
+  line-height: 17px;
+}
+
+#info-text .link {
+  color: #639ff9;
+  font-size: inherit;
+  line-height: 17px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+}
+
+#rule-status-comment {
+  align-self: center;
+}
+
+#heading-logo {
+  height: 16px;
+  width: 16px;
+}
+
+#logo-text {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+#view-result-btn {
+  all: unset;
+  background: #1e69ff;
+  color: #fff;
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+#view-result-btn:hover {
+  cursor: pointer;
+  border-color: #0f4cd9;
+  background: #0f4cd9;
+}
+
+#rule-status {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 4px;
+}
+
+#rule-applied-status,
+#rule-not-applied-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 1px;
+  font-size: 10px;
+  font-weight: 500;
+  margin-top: -3px;
+}
+
+#rule-applied-status {
+  color: #28c07a;
+}
+
+#rule-not-applied-status {
+  color: #e09400;
+}
+
+#minimized-details {
+  display: none;
+  pointer-events: none;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3px;
+}
+
+#minimized-details.visible {
+  display: flex;
+  pointer-events: auto;
+}
+
+#minimized-logo svg {
+  height: 16px;
+  width: 16px;
+}
+
+#test-rule-minimized-btn {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+#test-rule-minimized-btn span {
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+#test-rule-minimized-btn span svg {
+  height: 20px;
+  width: 20px;
+}
+
+.secondary-text {
+  font-size: 11px;
+  color: #b0b0b5b3;
+}
+
+.hidden {
+  display: none !important;
+}
+
+a {
+  color: #9370db;
+}
+
+.warning {
+  background: #5c3111;
+}
+
+.success {
+  background: #104b2f;
+}
+
+#applied-rules-list {
+  margin-top: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+#applied-rules-list::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+
+#applied-rules-list::-webkit-scrollbar-thumb {
+  background: #353535;
+  border-radius: 8px;
+}
+
+#applied-rules-list-header {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.applied-rule-list-item {
+  border-radius: 8px;
+  background: #282828;
+  padding: 12px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.applied-rule-list-item:hover {
+  background: #383838;
+}
+
+.applied-rule-list-item:hover .applied-rule-arrow-icon {
+  opacity: 1;
+}
+
+.applied-rule-list-item:first-child {
+  margin-top: 0;
+}
+
+.applied-rule-item-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.applied-rule-icon {
+  align-self: center;
+}
+
+.applied-rule-icon svg {
+  width: 14px;
+  height: 14px;
+  position: relative;
+  top: 2px;
+}
+
+.applied-rule-arrow-icon {
+  transform: scale(1.2);
+  align-self: center;
+  transition: 0.2s all;
+  opacity: 0;
+}
+
+.applied-rule-name {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#settings-button {
+  position: relative;
+}
+
+#settings-button[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+
+  position: absolute;
+  z-index: 1;
+  right: 0px;
+  top: 34px;
+  width: 158px;
+  max-width: 232px;
+  padding: 6px 12px;
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  border-radius: 4px;
+  background: #000;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.16);
+}
+
+.test-rule-widget-progress-bar {
+  height: 6px;
+  background: #3c7ff3;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+
+  animation-name: progressBar;
+  animation-delay: 50ms;
+  animation-direction: normal;
+  animation-duration: 5s;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  animation-timing-function: linear;
+}
+
+#container:hover .test-rule-widget-progress-bar {
+  animation-play-state: paused;
+}
+
+@keyframes progressBar {
+  from {
+    width: 100%;
+  }
+
+  to {
+    width: 0%;
+  }
+}
+</style>
+    <div id="container">
+        <div id="minimized-details">
+            <div id="minimized-logo"><svg width="251" height="251" viewBox="0 0 251 251" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M124.408 245.868V188.238C104.504 188.529 82.7544 186.943 60.1611 182.339L60.0545 182.235V216.575C60.0545 223.437 60.7942 228.978 62.2736 233.201C63.7529 237.423 65.8487 240.722 68.5609 243.097C71.5197 245.472 75.0949 247.055 79.2864 247.847C83.7246 248.903 88.7791 249.43 94.4501 249.43C100.121 249.43 105.792 249.035 111.463 248.243C117.381 247.451 121.695 246.66 124.408 245.868Z" fill="white"></path>
+<path d="M124.408 169.866H127.147C152.451 169.356 180.05 165.599 203.571 154.848L203.554 154.824C214.403 148.49 223.773 139.518 231.663 127.906C239.553 116.295 243.498 102.308 243.498 85.9467C243.498 59.821 234.868 39.1052 217.609 23.7992C200.349 8.4932 174.707 0.84021 140.681 0.84021C128.106 0.84021 116.271 1.6319 105.176 3.21527C94.0803 4.53475 84.341 6.77789 75.9578 9.94465C71.0266 11.7919 67.0816 14.2989 64.1228 17.4657C61.4106 20.3685 60.0545 24.5909 60.0545 30.1327V96.5095C71.3817 98.242 114.382 101.954 124.038 101.543V57.8418C126.75 57.314 129.216 56.9182 131.435 56.6543C133.654 56.3904 136.612 56.2584 140.311 56.2584C153.379 56.2584 162.871 58.8974 168.789 64.1753C174.953 69.1893 178.035 76.7103 178.035 86.7384C178.035 96.7664 175.323 104.419 169.899 109.697C164.474 114.711 157.077 117.218 147.708 117.218H124.038V117.008C123.974 117.109 123.915 117.21 123.861 117.313C87.9797 115.588 66.1922 114.066 60.0404 113.204L60.0399 113.194L42.9936 111.502C41.4373 111.348 40.2998 109.961 40.4529 108.404L41.3754 99.0229C41.6423 96.3086 38.2948 94.8199 36.4615 96.8375L0.888601 135.986C-0.0859492 137.058 -0.0924867 138.694 0.873451 139.776L29.4492 171.786C31.0921 173.627 34.1369 172.635 34.3782 170.181L35.0406 163.445C35.2015 161.809 36.7162 160.655 38.336 160.934L60.0545 164.671V164.802L60.1611 164.695C73.4489 166.933 97.4782 170.207 124.408 169.908V169.866Z" fill="white"></path>
+<path d="M175.076 223.305L153.644 186.439C181.486 183.412 203.494 177.208 215.783 172.246C220.496 178.807 225.172 185.139 229.813 191.241C238.443 202.589 245.224 212.881 250.155 222.117C247.689 231.354 243.128 238.479 236.471 243.493C230.06 248.243 222.786 250.618 214.65 250.618C209.225 250.618 204.541 249.958 200.596 248.639C196.651 247.319 193.199 245.472 190.24 243.097C187.281 240.722 184.569 237.819 182.103 234.388C179.638 230.958 177.295 227.263 175.076 223.305Z" fill="white"></path>
+</svg></div>
+            <button id="test-rule-minimized-btn"><span class="success"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_2834_1705" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect width="16" height="16" fill="#D9D9D9"></rect>
+</mask>
+<g mask="url(#mask0_2834_1705)">
+<path d="M7.13333 10.4833L11.1667 6.46667L10.2 5.5L7.13333 8.56667L5.76667 7.2L4.81667 8.16667L7.13333 10.4833ZM8 14.5333C7.1 14.5333 6.25 14.3667 5.45 14.0333C4.66111 13.6889 3.96667 13.2222 3.36667 12.6333C2.77778 12.0333 2.31111 11.3389 1.96667 10.55C1.63333 9.75 1.46667 8.9 1.46667 8C1.46667 7.08889 1.63333 6.23889 1.96667 5.45C2.31111 4.66111 2.77778 3.97222 3.36667 3.38333C3.96667 2.78333 4.66111 2.31667 5.45 1.98333C6.25 1.63889 7.1 1.46667 8 1.46667C8.91111 1.46667 9.76111 1.63889 10.55 1.98333C11.3389 2.31667 12.0278 2.78333 12.6167 3.38333C13.2167 3.97222 13.6833 4.66111 14.0167 5.45C14.3611 6.23889 14.5333 7.08889 14.5333 8C14.5333 8.9 14.3611 9.75 14.0167 10.55C13.6833 11.3389 13.2167 12.0333 12.6167 12.6333C12.0278 13.2222 11.3389 13.6889 10.55 14.0333C9.76111 14.3667 8.91111 14.5333 8 14.5333ZM8 13.15C9.43333 13.15 10.65 12.65 11.65 11.65C12.65 10.65 13.15 9.43333 13.15 8C13.15 6.56667 12.65 5.35 11.65 4.35C10.65 3.35 9.43333 2.85 8 2.85C6.56667 2.85 5.35 3.35 4.35 4.35C3.35 5.35 2.85 6.56667 2.85 8C2.85 9.43333 3.35 10.65 4.35 11.65C5.35 12.65 6.56667 13.15 8 13.15Z" fill="#28C07A"></path>
+</g>
+</svg></span></button>
+        </div>
+        <div id="heading-container">
+            <div id="logo-container">
+                <span id="heading-logo"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+  <path d="M7.98439 15.6591V11.9822C6.71565 12.0008 5.32921 11.8996 3.88899 11.6058L3.8822 11.5992V13.7902C3.8822 14.2279 3.92935 14.5815 4.02366 14.8509C4.11796 15.1203 4.25156 15.3307 4.42445 15.4823C4.61305 15.6338 4.84095 15.7348 5.10814 15.7853C5.39105 15.8527 5.71325 15.8864 6.07475 15.8864C6.43625 15.8864 6.79774 15.8611 7.15924 15.8106C7.53645 15.7601 7.8115 15.7096 7.98439 15.6591Z" fill="url(#paint0_linear_2826_2722)"></path>
+  <path d="M7.98439 10.81H8.15909C9.77207 10.7775 11.5313 10.5378 13.0307 9.85185L13.0296 9.85029C13.7212 9.4462 14.3184 8.87374 14.8214 8.13291C15.3243 7.39208 15.5758 6.49972 15.5758 5.45582C15.5758 3.78896 15.0257 2.46725 13.9255 1.4907C12.8253 0.514153 11.1907 0.0258789 9.02172 0.0258789C8.22015 0.0258789 7.46572 0.0763902 6.75845 0.177412C6.05117 0.261597 5.43035 0.404713 4.89596 0.606758C4.58162 0.724617 4.33014 0.884567 4.14154 1.08661C3.96865 1.27182 3.8822 1.54121 3.8822 1.89479V6.12974C4.60426 6.24028 7.34528 6.47711 7.96081 6.45089V3.66268C8.1337 3.629 8.29087 3.60375 8.43233 3.58691C8.57378 3.57008 8.76239 3.56166 8.99815 3.56166C9.83116 3.56166 10.4363 3.73003 10.8135 4.06677C11.2064 4.38667 11.4029 4.86653 11.4029 5.50633C11.4029 6.14614 11.23 6.63442 10.8842 6.97116C10.5384 7.29106 10.0669 7.45101 9.46966 7.45101H7.96081V7.43758C7.95673 7.44399 7.95296 7.45048 7.94952 7.45705C5.66229 7.347 4.27345 7.24991 3.8813 7.19488L3.88127 7.19426L2.79467 7.08629C2.69546 7.07644 2.62295 6.98802 2.63269 6.88881L2.69152 6.29001C2.70853 6.11695 2.49506 6.02204 2.37823 6.15072L0.11053 8.64856C0.0484818 8.71691 0.0480731 8.82113 0.109583 8.89009L1.93123 10.9325C2.03594 11.0499 2.2301 10.9867 2.24547 10.8302L2.28772 10.4002C2.29797 10.2959 2.39452 10.2223 2.49778 10.2401L3.8822 10.4785V10.4869L3.88899 10.4801C4.73603 10.6229 6.26777 10.8318 7.98439 10.8127V10.81Z" fill="url(#paint1_linear_2826_2722)"></path>
+  <path d="M11.2143 14.2195L9.8481 11.8674C11.6229 11.6743 13.0258 11.2785 13.8091 10.9619C14.1095 11.3805 14.4076 11.7844 14.7035 12.1738C15.2536 12.8978 15.6858 13.5544 16.0002 14.1437C15.843 14.733 15.5522 15.1876 15.1279 15.5075C14.7192 15.8106 14.2556 15.9621 13.7369 15.9621C13.3911 15.9621 13.0925 15.92 12.841 15.8359C12.5895 15.7517 12.3695 15.6338 12.1809 15.4823C11.9923 15.3307 11.8194 15.1455 11.6622 14.9267C11.505 14.7078 11.3557 14.4721 11.2143 14.2195Z" fill="url(#paint2_linear_2826_2722)"></path>
+  <path d="M0.0637207 8.77344C0.0645556 8.81521 0.0798203 8.85677 0.109546 8.8901L1.93119 10.9325C2.03591 11.0499 2.23006 10.9867 2.24543 10.8302L2.28769 10.4002C2.29793 10.2959 2.39449 10.2223 2.49774 10.2401L3.88216 10.4785V10.4869L3.88896 10.4801C4.73599 10.6229 6.26774 10.8318 7.98435 10.8127V10.81H8.01892V9.21903L0.0637207 8.77344Z" fill="url(#paint3_linear_2826_2722)"></path>
+  <path d="M8.01896 9.21922L0.0637569 8.77363C0.0628642 8.72897 0.0784679 8.68408 0.11053 8.64876L2.37823 6.15092C2.49506 6.02224 2.70853 6.11715 2.69152 6.29021L2.63269 6.88901C2.62295 6.98822 2.69546 7.07664 2.79467 7.08649L3.88127 7.19446L3.8813 7.19508C4.27345 7.2501 5.66229 7.3472 7.94952 7.45725C7.95296 7.45068 7.95673 7.44419 7.96081 7.43778V7.45121H8.01896V9.21922Z" fill="url(#paint4_linear_2826_2722)"></path>
+  <defs>
+    <lineargradient id="paint0_linear_2826_2722" x1="3.76992" y1="-1.50587" x2="13.212" y2="19.2702" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint1_linear_2826_2722" x1="3.76992" y1="-1.50587" x2="13.212" y2="19.2702" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint2_linear_2826_2722" x1="3.76992" y1="-1.50587" x2="13.212" y2="19.2702" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint3_linear_2826_2722" x1="11.8972" y1="9.83355" x2="5.27078" y2="8.10349" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+    <lineargradient id="paint4_linear_2826_2722" x1="2.63345" y1="4.98671" x2="14.7158" y2="6.53243" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1EA0FF"></stop>
+      <stop offset="1" stop-color="#004EEB"></stop>
+    </lineargradient>
+  </defs>
+</svg></span>
+                <span id="logo-text">requestly</span>
+            </div>
+            <div id="actions-container">
+                <button id="settings-button" class="" data-tooltip="Hide widget in app settings"><svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.6167 6.91667L9.58333 5.88333C9.62778 5.46111 9.5 5.1 9.2 4.8C8.9 4.48889 8.53889 4.35556 8.11667 4.4L7.08333 3.36667C7.22778 3.31111 7.37778 3.27222 7.53333 3.25C7.68889 3.21667 7.84444 3.2 8 3.2C8.77778 3.2 9.43889 3.47222 9.98333 4.01667C10.5278 4.56111 10.8 5.22222 10.8 6C10.8 6.15556 10.7833 6.31111 10.75 6.46667C10.7278 6.62222 10.6833 6.77222 10.6167 6.91667ZM12.8333 9.13333L11.9667 8.26667C12.3667 7.95556 12.7278 7.61667 13.05 7.25C13.3833 6.87222 13.6611 6.45556 13.8833 6C13.3389 4.87778 12.5333 4 11.4667 3.36667C10.4111 2.72222 9.25556 2.4 8 2.4C7.71111 2.4 7.42778 2.41667 7.15 2.45C6.87222 2.48333 6.6 2.53889 6.33333 2.61667L5.36667 1.65C5.78889 1.48333 6.21667 1.36667 6.65 1.3C7.09444 1.23333 7.54444 1.2 8 1.2C9.58889 1.2 11.0389 1.63333 12.35 2.5C13.6722 3.35556 14.6222 4.52222 15.2 6C14.9556 6.63333 14.6278 7.21111 14.2167 7.73333C13.8167 8.24444 13.3556 8.71111 12.8333 9.13333ZM12.8 12.5L10.6333 10.3333C10.2111 10.4889 9.77778 10.6056 9.33333 10.6833C8.9 10.7611 8.45556 10.8 8 10.8C6.41111 10.8 4.95556 10.3722 3.63333 9.51667C2.32222 8.65 1.37778 7.47778 0.800001 6C1.04444 5.36667 1.36667 4.78889 1.76667 4.26667C2.16667 3.74444 2.63333 3.27222 3.16667 2.85L1.5 1.18333L2.35 0.333334L13.65 11.65L12.8 12.5ZM4.01667 3.71667C3.62778 4.02778 3.26667 4.37222 2.93333 4.75C2.6 5.11667 2.32778 5.53333 2.11667 6C2.66111 7.12222 3.46111 8.00556 4.51667 8.65C5.58333 9.28333 6.74444 9.6 8 9.6C8.28889 9.6 8.57222 9.58333 8.85 9.55C9.12778 9.50556 9.40556 9.45 9.68333 9.38333L8.93333 8.63333C8.77778 8.68889 8.62222 8.73333 8.46667 8.76667C8.31111 8.78889 8.15556 8.8 8 8.8C7.22222 8.8 6.56111 8.52778 6.01667 7.98333C5.47222 7.43889 5.2 6.77778 5.2 6C5.2 5.84444 5.21667 5.68889 5.25 5.53333C5.29445 5.37778 5.33333 5.22222 5.36667 5.06667L4.01667 3.71667Z" fill="white"></path>
+</svg></button>
+                <button id="minimize-button" class="hidden"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_2826_2732" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<rect width="16" height="16" fill="#D9D9D9"></rect>
+</mask>
+<g mask="url(#mask0_2826_2732)">
+<path d="M6.27083 4.75L8.5 6.95833V5.27083H10V9.5H5.75V8H7.4375L5.22917 5.79167L6.27083 4.75ZM13.75 14C13.125 14 12.5903 13.7847 12.1458 13.3542C11.7153 12.9097 11.5 12.375 11.5 11.75C11.5 11.125 11.7153 10.5972 12.1458 10.1667C12.5903 9.72222 13.125 9.5 13.75 9.5C14.375 9.5 14.9028 9.72222 15.3333 10.1667C15.7778 10.5972 16 11.125 16 11.75C16 12.375 15.7778 12.9097 15.3333 13.3542C14.9028 13.7847 14.375 14 13.75 14ZM1.5 14C1.08333 14 0.729167 13.8542 0.4375 13.5625C0.145833 13.2708 1.78814e-07 12.9167 1.78814e-07 12.5V3.5C1.78814e-07 3.08333 0.145833 2.72917 0.4375 2.4375C0.729167 2.14583 1.08333 2 1.5 2H14.5C14.9167 2 15.2708 2.14583 15.5625 2.4375C15.8542 2.72917 16 3.08333 16 3.5V8H14.5V3.5H1.5V12.5H10V14H1.5Z" fill="white"></path>
+</g>
+</svg>
+                </button><button id="close-button" class=""><svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.167368 0.167368C0.390524 -0.0557892 0.752333 -0.0557892 0.97549 0.167368L4 3.19188L7.02451 0.167368C7.24767 -0.0557892 7.60948 -0.0557892 7.83263 0.167368C8.05579 0.390524 8.05579 0.752333 7.83263 0.97549L4.80812 4L7.83263 7.02451C8.05579 7.24767 8.05579 7.60948 7.83263 7.83263C7.60948 8.05579 7.24767 8.05579 7.02451 7.83263L4 4.80812L0.97549 7.83263C0.752333 8.05579 0.390524 8.05579 0.167368 7.83263C-0.0557892 7.60948 -0.0557892 7.24767 0.167368 7.02451L3.19188 4L0.167368 0.97549C-0.0557892 0.752333 -0.0557892 0.390524 0.167368 0.167368Z" fill="#E3E3E3"></path>
+</svg>
+            </button></div>
+        </div>
+        <div id="test-rule-container">
+    <div id="implicit-widget-container">
+    <div id="applied-rules-list-header">Rules applied on this page</div>
+    <div id="applied-rules-list"></div>
+    <div class="test-rule-widget-progress-bar">
+    </div></div></div>
+         <div id="info-container" class="hidden">
+          <div id="info-icon"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none">
+  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z" fill="currentColor"></path>
+</svg></div>
+          <div id="info-text"></div>
+        </div>
+    </div>
+    </template></rq-implicit-test-rule-widget></html>

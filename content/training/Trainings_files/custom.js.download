@@ -1,0 +1,26 @@
+/*
+ * 	
+ * @param - valid values currently are:
+ * 	- 'cpp' - for C++
+ *  - 'java' - for Java
+ *  - 'cs' - for C#
+ *  - 'py' - for Python
+ *  - 'js' - for Javascript
+ *  
+ *  - snippetArticleId - snippet for which to show the article ID
+ */
+function showSnippetButton(lang, snippetArticleId) {
+	
+	var html = "<a href=\"/index.php?option=com_content&view=article&id=";
+	html += snippetArticleId;
+	html += "&tmpl=component&task=preview\" class=\"modal\">";
+	html += "<img src = \"/images/lang_logos/" + lang +"_logo.png\"";
+	html += "alt = \"" + lang + "\" ";
+	html += "class=\"" + lang + "\"";
+	html += "</a>";
+	document.write(html);
+	// below is prod version
+	
+//	<p><a href="index.php?option=com_content&amp;view=article&amp;id=74&amp;tmpl=component&amp;task=preview" class="modal"> <img src="/martin-toshev/images/lang_logos/py_logo.png" alt="py" class="py" /> </a></p>
+
+}
